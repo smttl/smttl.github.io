@@ -1,79 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hesaplama Aracı</title>
+    <title>Formül Hesaplama</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
         .container {
-            max-width: 600px;
-            margin: auto;
+            max-width: 400px;
+            margin: 0 auto;
         }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group label {
+        label, input, button {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 10px;
         }
-        .input-group input {
-            width: 100%;
+        button {
             padding: 10px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        .button {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .button button {
-            padding: 10px 20px;
-            font-size: 16px;
             background-color: #007BFF;
             color: white;
             border: none;
             cursor: pointer;
         }
-        .button button:hover {
+        button:hover {
             background-color: #0056b3;
         }
-        .results {
+        .result {
             margin-top: 20px;
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .bar {
-            width: 100%;
-            height: 30px;
-            margin-top: 20px;
-            position: relative;
             background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            border: 1px solid #ccc;
         }
-        .bar .red,
-        .bar .black,
-        .bar .green {
-            position: absolute;
-            top: 0;
-            height: 100%;
+        .disclaimer {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #555;
+            font-style: italic;
         }
-        .bar .red {
-            background-color: red;
-        }
-        .bar .black {
-            background-color: black;
-        }
-        .bar .green {
-            background-color: green;
-        }
-        .footer {
+        footer {
             margin-top: 30px;
             text-align: center;
             font-size: 14px;
@@ -83,77 +49,50 @@
 </head>
 <body>
     <div class="container">
-        <h1>Hesaplama Aracı</h1>
-        <div class="input-group">
-            <label for="average">Sınıf Ortalaması:</label>
-            <input type="number" id="average" placeholder="Ortalama" step="0.01">
-        </div>
-        <div class="input-group">
-            <label for="class-average">Sınıf Ortalaması:</label>
-            <input type="number" id="class-average" placeholder="Sınıf Ortalaması" step="0.01">
-        </div>
-        <div class="button">
-            <button onclick="calculateResults()">Hesapla</button>
-        </div>
-        <div class="results">
-            <p id="max-result">Max cc Sonuç: </p>
-            <p id="min-result">Min cc Sonuç: </p>
-        </div>
-        <div class="bar" id="result-bar"></div>
+        <h1>Formül Hesaplama</h1>
+        <label for="so">Sınıf ortalaması:</label>
+        <input type="number" id="so" placeholder="SO değerini girin (ör. 63.00)">
+        <button onclick="hesapla()">Hesapla</button>
+        <div class="result" id="result"></div>
+        <p class="disclaimer">
+            Buradaki sonuçlar tahmine dayalıdır. Hocaların açıkladığı ortalamaların doğruluğuna göre sonuç değişmektedir.
+        </p>
     </div>
-    <div class="footer">
-        <p>Samet tarafından yapılmıştır.</p>
-    </div>
+
+    <footer>
+        Samet tarafından yapılmıştır
+    </footer>
 
     <script>
-        function calculateResults() {
-            const average = parseFloat(document.getElementById('average').value);
-            const classAverage = parseFloat(document.getElementById('class-average').value);
+        function hesapla() {
+            const so = parseFloat(document.getElementById('so').value);
+            let ts = 0;
 
-            if (isNaN(average) || isNaN(classAverage)) {
-                alert('Lütfen tüm alanları doldurun!');
-                return;
-            }
+            // TS hesaplama
+            if (so >= 62.50 && so <= 69.99) ts = 41;
+            else if (so >= 57.50 && so <= 62.49) ts = 43;
+            else if (so >= 52.50 && so <= 57.49) ts = 45;
+            else if (so >= 47.50 && so <= 52.49) ts = 47;
+            else if (so >= 42.50 && so <= 47.49) ts = 49;
+            else if (so >= 0.00 && so <= 42.49) ts = 51;
 
-            // Tablo değeri belirleme
-            let selectedValue = 0;
-            if (classAverage >= 62.50 && classAverage <= 69.99) {
-                selectedValue = 41;
-            } else if (classAverage >= 57.50 && classAverage <= 62.49) {
-                selectedValue = 43;
-            } else if (classAverage >= 52.50 && classAverage <= 57.49) {
-                selectedValue = 45;
-            } else if (classAverage >= 47.50 && classAverage <= 52.49) {
-                selectedValue = 47;
-            } else if (classAverage >= 42.50 && classAverage <= 47.49) {
-                selectedValue = 49;
-            } else if (classAverage >= 0.00 && classAverage <= 42.49) {
-                selectedValue = 51;
-            } else {
-                alert('Geçersiz sınıf ortalaması!');
-                return;
-            }
+            // Formül 1 ve Formül 2
+            const aa = ((50 - ts) / 10) * 8;
+            const bb = ((50 - ts) / 10) * 12;
 
-            // Hesaplamalar
-            const a = (50 - selectedValue) / 10;
-            const maxResult = average - (a * 8);
-            const minResult = average - (a * 12);
+            // Min ve Max hesaplama
+            const minCC = so - aa;
+            const maxCC = so - bb;
 
-            // Sonuçları göster
-            document.getElementById('max-result').textContent = `Max Sonuç: ${maxResult.toFixed(2)}`;
-            document.getElementById('min-result').textContent = `Min Sonuç: ${minResult.toFixed(2)}`;
-
-            // Bar için pozisyonları hesapla
-            const bar = document.getElementById('result-bar');
-            const barWidth = bar.offsetWidth;
-            const minPosition = Math.max(0, (minResult / 100) * barWidth);
-            const maxPosition = Math.min(barWidth, (maxResult / 100) * barWidth);
-
-            // Barı oluştur
-            bar.innerHTML = `
-                <div class="red" style="width: ${minPosition}px;"></div>
-                <div class="black" style="left: ${minPosition}px; width: ${maxPosition - minPosition}px;"></div>
-                <div class="green" style="left: ${maxPosition}px; width: ${barWidth - maxPosition}px;"></div>
+            // Sonuçları gösterme
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <p><strong>SO:</strong> ${so.toFixed(2)}</p>
+                <p><strong>TS:</strong> ${ts}</p>
+                <p><strong>AA:</strong> ${aa.toFixed(2)}</p>
+                <p><strong>BB:</strong> ${bb.toFixed(2)}</p>
+                <p><strong>Min CC:</strong> ${minCC.toFixed(2)}</p>
+                <p><strong>Max CC:</strong> ${maxCC.toFixed(2)}</p>
             `;
         }
     </script>
