@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hesaplama Aracı</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .button button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .bar {
+            width: 100%;
+            height: 30px;
+            margin-top: 20px;
+            position: relative;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .bar .red,
+        .bar .black,
+        .bar .green {
+            position: absolute;
+            top: 0;
+            height: 100%;
+        }
+        .bar .red {
+            background-color: red;
+        }
+        .bar .black {
+            background-color: black;
+        }
+        .bar .green {
+            background-color: green;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hesaplama Aracı</h1>
+        <div class="input-group">
+            <label for="average">Ortalama:</label>
+            <input type="number" id="average" placeholder="Ortalama" step="0.01">
+        </div>
+        <div class="input-group">
+            <label for="class-average">Sınıf Ortalaması:</label>
+            <input type="number" id="class-average" placeholder="Sınıf Ortalaması" step="0.01">
+        </div>
+        <div class="button">
+            <button onclick="calculateResults()">Hesapla</button>
+        </div>
+        <div class="results">
+            <p id="max-result">Max Sonuç: </p>
+            <p id="min-result">Min Sonuç: </p>
+        </div>
+        <div class="bar" id="result-bar"></div>
+    </div>
+    <div class="footer">
+        <p>Samet tarafından yapılmıştır.</p>
+    </div>
+
+    <script>
+        function calculateResults() {
+            const average = parseFloat(document.getElementById('average').value);
+            const classAverage = parseFloat(document.getElementById('class-average').value);
+
+            if (isNaN(average) || isNaN(classAverage)) {
+                alert('Lütfen tüm alanları doldurun!');
+                return;
+            }
+
+            // Tablo değeri belirleme
+            let selectedValue = 0;
+            if (classAverage >= 62.50 && classAverage <= 69.99) {
+                selectedValue = 41;
+            } else if (classAverage >= 57.50 && classAverage <= 62.49) {
+                selectedValue = 43;
+            } else if (classAverage >= 52.50 && classAverage <= 57.49) {
+                selectedValue = 45;
+            } else if (classAverage >= 47.50 && classAverage <= 52.49) {
+                selectedValue = 47;
+            } else if (classAverage >= 42.50 && classAverage <= 47.49) {
+                selectedValue = 49;
+            } else if (classAverage >= 0.00 && classAverage <= 42.49) {
+                selectedValue = 51;
+            } else {
+                alert('Geçersiz sınıf ortalaması!');
+                return;
+            }
+
+            // Hesaplamalar
+            const a = (50 - selectedValue) / 10;
+            const maxResult = average - (a * 8);
+            const minResult = average - (a * 12);
+
+            // Sonuçları göster
+            document.getElementById('max-result').textContent = `Max Sonuç: ${maxResult.toFixed(2)}`;
+            document.getElementById('min-result').textContent = `Min Sonuç: ${minResult.toFixed(2)}`;
+
+            // Bar için pozisyonları hesapla
+            const bar = document.getElementById('result-bar');
+            const barWidth = bar.offsetWidth;
+            const minPosition = Math.max(0, (minResult / 100) * barWidth);
+            const maxPosition = Math.min(barWidth, (maxResult / 100) * barWidth);
+
+            // Barı oluştur
+            bar.innerHTML = `
+                <div class="red" style="width: ${minPosition}px;"></div>
+                <div class="black" style="left: ${minPosition}px; width: ${maxPosition - minPosition}px;"></div>
+                <div class="green" style="left: ${maxPosition}px; width: ${barWidth - maxPosition}px;"></div>
+            `;
+        }
+    </script>
+</body>
+</html>
