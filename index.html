@@ -1,33 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-	  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111042920-2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'UA-111042920-2');
-</script>
-	 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-	  
-	  
-	  <iframe data-aa='902894' src='//ad.a-ads.com/902894?size=990x90' scrolling='no' style='width:990px; height:90px; border:0px; padding:0;overflow:hidden' allowtransparency='true'></iframe>
-	  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hesaplama Sitesi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hesaplama Aracı</h1>
+        <div class="form-group">
+            <label for="ortalaman">Ortalaman:</label>
+            <input type="number" id="ortalaman" placeholder="Ortalamanızı girin">
+        </div>
+        <div class="form-group">
+            <label for="sinifOrtalamasi">Sınıf Ortalaması:</label>
+            <input type="number" id="sinifOrtalamasi" placeholder="Sınıf ortalamasını girin">
+        </div>
+        <div class="form-group">
+            <label for="ss">SS (Standart Sapma):</label>
+            <input type="number" id="ss" placeholder="Standart sapmayı girin">
+        </div>
+        <button onclick="hesapla()">Hesapla</button>
+        <div class="result" id="result"></div>
+    </div>
+    <footer>
+        Bu site Samet Işık tarafından hazırlanmıştır.
+    </footer>
 
-    <script src="https://authedmine.com/lib/simple-ui.min.js" async></script>
-<div class="coinhive-miner" 
-	style="width: 256px; height: 310px"
-	data-key="xu1ey2od129ibu8vHfOO8M0QEfX428Kq">
-	<em>Loading...</em>
-</div>
-			
-		</div>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-</script>
-  </body>
+    <script>
+        function hesapla() {
+            // Input değerlerini al
+            const ortalaman = parseFloat(document.getElementById("ortalaman").value);
+            const sinifOrtalamasi = parseFloat(document.getElementById("sinifOrtalamasi").value);
+            const ss = parseFloat(document.getElementById("ss").value);
+
+            if (isNaN(ortalaman) || isNaN(sinifOrtalamasi) || isNaN(ss)) {
+                document.getElementById("result").innerHTML = "Lütfen tüm alanları doldurun.";
+                return;
+            }
+
+            // T-Score hesaplama
+            const tScore = ((ortalaman - sinifOrtalamasi) / ss) * 10 + 50;
+
+            // AA hesaplama
+            const aa = ((50 - tScore) / 10) * ss;
+
+            // En düşük CC hesaplama
+            const enDusukCC = sinifOrtalamasi - aa;
+
+            // Sonucu ekrana yazdır
+            document.getElementById("result").innerHTML = `
+                <p>En Düşük CC: ${enDusukCC.toFixed(2)}</p>
+            `;
+        }
+    </script>
+</body>
 </html>
