@@ -4,24 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hesaplama Web Sitesi</title>
+    <style>
+        /* Genel Sayfa Stili */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Başlık */
+        h1 {
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        /* Form Stili */
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #007BFF;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        /* Sonuçlar */
+        h2 {
+            margin-top: 20px;
+            color: #444;
+        }
+
+        p {
+            font-size: 18px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Genel Düzenleme */
+        .container {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hesaplama Aracı</h1>
-    <form id="calculation-form">
-        <label for="t">Tscore Değeriniz:</label>
-        <input type="number" id="t" name="t" required>
-        <br><br>
-        <label for="o">Ortalamanız:</label>
-        <input type="number" id="o" name="o" required>
-        <br><br>
-        <label for="so">Sınıf ortalaması:</label>
-        <input type="number" id="so" name="so" required>
-        <br><br>
-        <button type="button" onclick="calculate()">Hesapla</button>
-    </form>
-    <h2>Sonuçlar</h2>
-    <p>SS: <span id="ss-result"></span></p>
-    <p>Min CC: <span id="min-cc-result"></span></p>
+    <div class="container">
+        <h1>Hesaplama Aracı</h1>
+        <form id="calculation-form">
+            <label for="t">Tscore değeriniz:</label>
+            <input type="number" id="t" name="t" placeholder="T değerini giriniz" required>
+
+            <label for="o">Ortalamanız:</label>
+            <input type="number" id="o" name="o" placeholder="O değerini giriniz" required>
+
+            <label for="so">Sınıf ortalaması:</label>
+            <input type="number" id="so" name="so" placeholder="SO değerini giriniz" required>
+
+            <button type="button" onclick="calculate()">Hesapla</button>
+        </form>
+        <h2>Sonuçlar</h2>
+        <p>SS: <span id="ss-result">-</span></p>
+        <p>Min CC: <span id="min-cc-result">-</span></p>
+    </div>
 
     <!-- JavaScript Kodu -->
     <script>
