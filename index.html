@@ -3,116 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hesaplama Sitesi</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #e9ecef;
-            border-radius: 4px;
-        }
-        footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #555;
-        }
-    </style>
+    <title>Hesaplama Web Sitesi</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Hesaplama Aracı</h1>
-        <div class="form-group">
-            <label for="ortalaman">Ortalaman:</label>
-            <input type="number" id="ortalaman" placeholder="Ortalamanızı girin">
-        </div>
-        <div class="form-group">
-            <label for="sinifOrtalamasi">Sınıf Ortalaması:</label>
-            <input type="number" id="sinifOrtalamasi" placeholder="Sınıf ortalamasını girin">
-        </div>
-        <div class="form-group">
-            <label for="ss">SS (Standart Sapma):</label>
-            <input type="number" id="ss" placeholder="Standart sapmayı girin">
-        </div>
-        <button onclick="hesapla()">Hesapla</button>
-        <div class="result" id="result"></div>
-    </div>
-    <footer>
-        Bu site Samet Işık tarafından hazırlanmıştır.
-    </footer>
+    <h1>Hesaplama Aracı</h1>
+    <form id="calculation-form">
+        <label for="t">Tscore Değeri:</label>
+        <input type="number" id="t" name="t" required>
+        <br><br>
+        <label for="o">Ortalamanız:</label>
+        <input type="number" id="o" name="o" required>
+        <br><br>
+        <label for="so">sınıf ortalaması:</label>
+        <input type="number" id="so" name="so" required>
+        <br><br>
+        <button type="button" onclick="calculate()">Hesapla</button>
+    </form>
+    <h2>Sonuçlar</h2>
+    <p>SS: <span id="ss-result"></span></p>
+    <p>Min CC: <span id="min-cc-result"></span></p>
 
+    <!-- JavaScript Kodu -->
     <script>
-        function hesapla() {
-            // Input değerlerini al
-            const ortalaman = parseFloat(document.getElementById("ortalaman").value);
-            const sinifOrtalamasi = parseFloat(document.getElementById("sinifOrtalamasi").value);
-            const ss = parseFloat(document.getElementById("ss").value);
+        function calculate() {
+            const t = parseFloat(document.getElementById('t').value);
+            const o = parseFloat(document.getElementById('o').value);
+            const so = parseFloat(document.getElementById('so').value);
 
-            if (isNaN(ortalaman) || isNaN(sinifOrtalamasi) || isNaN(ss)) {
-                document.getElementById("result").innerHTML = "Lütfen tüm alanları doldurun.";
-                return;
-            }
+            // SS Hesaplama
+            const ss = (o - so) / ((t - 50) / 10);
+            document.getElementById('ss-result').innerText = ss.toFixed(2);
 
-            // T-Score hesaplama
-            const tScore = ((ortalaman - sinifOrtalamasi) / ss) * 10 + 50;
+            // TS Belirleme
+            let ts = 0;
+            if (so >= 62.50 && so <= 69.99) ts = 41;
+            else if (so >= 57.50 && so < 62.50) ts = 43;
+            else if (so >= 52.50 && so < 57.50) ts = 45;
+            else if (so >= 47.50 && so < 52.50) ts = 47;
+            else if (so >= 42.50 && so < 47.50) ts = 49;
+            else if (so >= 0.00 && so < 42.50) ts = 51;
 
-            // AA hesaplama
-            const aa = ((50 - tScore) / 10) * ss;
+            // AA Hesaplama
+            const aa = ((50 - ts) / 10) * ss;
 
-            // En düşük CC hesaplama
-            const enDusukCC = sinifOrtalamasi - aa;
-
-            // Sonucu ekrana yazdır
-            document.getElementById("result").innerHTML = `
-                <p>En Düşük CC: ${enDusukCC.toFixed(2)}</p>
-            `;
+            // Min CC Hesaplama
+            const minCc = so - aa;
+            document.getElementById('min-cc-result').innerText = minCc.toFixed(2);
         }
     </script>
 </body>
