@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SO Hesaplama</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>SO Hesaplama Aracı</h2>
+        <label for="so">SO Değerini Girin:</label>
+        <input type="number" id="so" placeholder="SO değeri">
+        <button onclick="calculate()">Hesapla</button>
+        <div id="results" class="result"></div>
+    </div>
+
+    <script>
+        function calculate() {
+            const so = parseFloat(document.getElementById('so').value);
+            let aats, bats, bbts, cbts, ccts, dcts;
+
+            if (so >= 62.50 && so <= 69.99) {
+                aats = 61; bats = 56; bbts = 51; cbts = 46; ccts = 41; dcts = 36;
+            } else if (so >= 57.50 && so <= 62.49) {
+                aats = 63; bats = 58; bbts = 53; cbts = 48; ccts = 43; dcts = 38;
+            } else if (so >= 52.50 && so <= 57.49) {
+                aats = 65; bats = 60; bbts = 55; cbts = 50; ccts = 45; dcts = 40;
+            } else if (so >= 47.50 && so <= 52.49) {
+                aats = 67; bats = 62; bbts = 57; cbts = 52; ccts = 47; dcts = 42;
+            } else if (so >= 42.50 && so <= 47.49) {
+                aats = 69; bats = 64; bbts = 59; cbts = 54; ccts = 49; dcts = 44;
+            } else if (so >= 0.00 && so <= 42.49) {
+                aats = 71; bats = 66; bbts = 61; cbts = 56; ccts = 51; dcts = 46;
+            } else {
+                document.getElementById('results').innerHTML = "Lütfen geçerli bir SO değeri giriniz!";
+                return;
+            }
+
+            const ax = ((aats - 50) / 10) * 9 + so;
+            const abx = ((bats - 50) / 10) * 9 + so;
+            const bx = ((bbts - 50) / 10) * 9 + so;
+            const bcx = ((cbts - 50) / 10) * 9 + so;
+            const cx = ((ccts - 50) / 10) * 9 + so;
+            const dcx = ((dcts - 50) / 10) * 9 + so;
+
+            document.getElementById('results').innerHTML = `
+                <strong>Sonuçlar:</strong><br>
+                AATS (AX): ${ax.toFixed(2)}<br>
+                BATS (ABX): ${abx.toFixed(2)}<br>
+                BBTS (BX): ${bx.toFixed(2)}<br>
+                CBTS (BCX): ${bcx.toFixed(2)}<br>
+                CCTS (CX): ${cx.toFixed(2)}<br>
+                DCTS (DCX): ${dcx.toFixed(2)}
+            `;
+        }
+    </script>
+</body>
+</html>
