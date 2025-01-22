@@ -43,6 +43,22 @@
             background: #e9ecef;
             border-radius: 4px;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -83,6 +99,35 @@
             const cx = ((ccts - 50) / 10) * 9 + so;
             const dcx = ((dcts - 50) / 10) * 9 + so;
 
+            const ranges = [
+                { label: "AA", range: `>= ${ax.toFixed(2)}` },
+                { label: "BA", range: `${abx.toFixed(2)} - ${ax.toFixed(2)}` },
+                { label: "BB", range: `${bx.toFixed(2)} - ${abx.toFixed(2)}` },
+                { label: "CB", range: `${bcx.toFixed(2)} - ${bx.toFixed(2)}` },
+                { label: "CC", range: `${cx.toFixed(2)} - ${bcx.toFixed(2)}` },
+                { label: "DC", range: `${dcx.toFixed(2)} - ${cx.toFixed(2)}` },
+                { label: "FF", range: `< ${dcx.toFixed(2)}` },
+            ];
+
+            let tableHTML = `
+                <table>
+                    <tr>
+                        <th>Kategori</th>
+                        <th>Aralık</th>
+                    </tr>
+            `;
+
+            ranges.forEach(row => {
+                tableHTML += `
+                    <tr>
+                        <td>${row.label}</td>
+                        <td>${row.range}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `</table>`;
+
             document.getElementById('results').innerHTML = `
                 <strong>Sonuçlar:</strong><br>
                 AATS (AX): ${ax.toFixed(2)}<br>
@@ -90,7 +135,10 @@
                 BBTS (BX): ${bx.toFixed(2)}<br>
                 CBTS (BCX): ${bcx.toFixed(2)}<br>
                 CCTS (CX): ${cx.toFixed(2)}<br>
-                DCTS (DCX): ${dcx.toFixed(2)}
+                DCTS (DCX): ${dcx.toFixed(2)}<br>
+                <br>
+                <strong>Tablo:</strong><br>
+                ${tableHTML}
             `;
         }
     </script>
