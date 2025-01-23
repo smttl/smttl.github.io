@@ -32,6 +32,7 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+   const db = firebase.firestore();
 </script>
    
     <meta charset="UTF-8">
@@ -148,8 +149,7 @@
        measurementId: "G-TDNH8ZTWWE"
         };
 
-      
-    
+     
 
         function calculateAndSave() {
             const t = parseFloat(document.getElementById('t').value);
