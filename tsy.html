@@ -94,6 +94,22 @@
             max-width: 400px;
             text-align: center;
         }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
 
         /* Genel Düzenleme */
         .container {
@@ -113,11 +129,15 @@
         <label for="so">Sınıf ortalaması:</label>
         <input type="number" id="so" placeholder="SO değerini giriniz" required>
         <br><br>
-        <button type="button" onclick="calculateAndSave()">Hesapla</button>
-    </form>
+        <button type="button" onclick="calculate(); calculateAndSave();">Hesapla</button>
+
         <h2>Sonuçlar</h2>
-        <p>SS: <span id="ss-result">-</span></p>
+        <p>Standart sapma: <span id="ss-result">-</span></p>
         <p>En düşük CC: <span id="min-cc-result">-</span></p>
+         <div id="results" class="result"></div>
+       
+    </form>
+        
 
            <footer>
         <a href="https://www.instagram.com/smttlvt/" target="_blank">Instagram</a>
@@ -189,6 +209,83 @@
                 });
         }
     </script>
+
+
+ <script>
+        function calculate() {
+            const t = parseFloat(document.getElementById('t').value);
+            const o = parseFloat(document.getElementById('o').value);
+            const so = parseFloat(document.getElementById('so').value);
+
+
+            const ss = (o - so) / ((t - 50) / 10);
+           // const so = parseFloat(document.getElementById('so').value);
+            let aats, bats, bbts, cbts, ccts, dcts;
+
+            if (so >= 62.50 && so <= 69.99) {
+                aats = 61; bats = 56; bbts = 51; cbts = 46; ccts = 41; dcts = 36;
+            } else if (so >= 57.50 && so <= 62.49) {
+                aats = 63; bats = 58; bbts = 53; cbts = 48; ccts = 43; dcts = 38;
+            } else if (so >= 52.50 && so <= 57.49) {
+                aats = 65; bats = 60; bbts = 55; cbts = 50; ccts = 45; dcts = 40;
+            } else if (so >= 47.50 && so <= 52.49) {
+                aats = 67; bats = 62; bbts = 57; cbts = 52; ccts = 47; dcts = 42;
+            } else if (so >= 42.50 && so <= 47.49) {
+                aats = 69; bats = 64; bbts = 59; cbts = 54; ccts = 49; dcts = 44;
+            } else if (so >= 0.00 && so <= 42.49) {
+                aats = 71; bats = 66; bbts = 61; cbts = 56; ccts = 51; dcts = 46;
+            } else {
+                document.getElementById('results').innerHTML = "Lütfen geçerli bir SO değeri giriniz!";
+                return;
+            }
+
+            const ax = ((aats - 50) / 10) * ss + so;
+            const abx = ((bats - 50) / 10) * ss + so;
+            const bx = ((bbts - 50) / 10) * ss + so;
+            const bcx = ((cbts - 50) / 10) * ss + so;
+            const cx = ((ccts - 50) / 10) * ss + so;
+            const dcx = ((dcts - 50) / 10) * ss + so;
+
+            const ranges = [
+                { label: "AA", range: `>= ${ax.toFixed(2)}` },
+                { label: "BA", range: `${abx.toFixed(2)} - ${ax.toFixed(2)}` },
+                { label: "BB", range: `${bx.toFixed(2)} - ${abx.toFixed(2)}` },
+                { label: "CB", range: `${bcx.toFixed(2)} - ${bx.toFixed(2)}` },
+                { label: "CC", range: `${cx.toFixed(2)} - ${bcx.toFixed(2)}` },
+                { label: "DC", range: `${dcx.toFixed(2)} - ${cx.toFixed(2)}` },
+                { label: "FF", range: `< ${dcx.toFixed(2)}` },
+            ];
+
+            let tableHTML = `
+                <table>
+                    <tr>
+                        <th>Kategori</th>
+                        <th>Aralık</th>
+                    </tr>
+            `;
+
+            ranges.forEach(row => {
+                tableHTML += `
+                    <tr>
+                        <td>${row.label}</td>
+                        <td>${row.range}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `</table>`;
+
+            document.getElementById('results').innerHTML = `
+                               <strong>Harf aralığı tablosu:</strong><br>
+                ${tableHTML}
+            `;
+        }
+    </script>
+
+
+
+
+
 </body>
 </html>
 
