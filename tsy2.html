@@ -137,15 +137,34 @@
         const database = firebase.database(app);
         let databaseURL = "cccc-bae13-default-rtdb.firebaseio.com";
 
+           
+
         // Hesaplama ve kaydetme fonksiyonu
         function calculateAndSave() {
             const t = parseFloat(document.getElementById('t').value);
             const o = parseFloat(document.getElementById('o').value);
             const so = parseFloat(document.getElementById('so').value);
 
-            // SS hesaplama
+        // SS Hesaplama
             const ss = (o - so) / ((t - 50) / 10);
+            document.getElementById('ss-result').innerText = ss.toFixed(2);
 
+            // TS Belirleme
+            let ts = 0;
+            if (so >= 62.50 && so <= 69.99) ts = 41;
+            else if (so >= 57.50 && so < 62.50) ts = 43;
+            else if (so >= 52.50 && so < 57.50) ts = 45;
+            else if (so >= 47.50 && so < 52.50) ts = 47;
+            else if (so >= 42.50 && so < 47.50) ts = 49;
+            else if (so >= 0.00 && so < 42.50) ts = 51;
+
+            // AA Hesaplama
+            const aa = ((50 - ts) / 10) * ss;
+
+            // Min CC Hesaplama
+            const minCc = so - aa;
+            document.getElementById('min-cc-result').innerText = minCc.toFixed(2);
+         
             // Realtime Database'e veriyi kaydet
             const data = {
                 t: t,
