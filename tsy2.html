@@ -1,55 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+        <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BVBHNTY8QV');
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hesaplama ve Realtime Database Kaydetme</title>
+    <title>Kesin CC hesaplayıcı</title>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <style>
+       /* Genel Sayfa Stili */
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             background: #f4f4f9;
-            text-align: center;
-            padding: 20px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
 
-        input {
-            margin: 10px 0;
+        /* Başlık */
+        h1 {
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        /* Form Stili */
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="number"] {
+            width: 100%;
             padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
             font-size: 16px;
         }
 
         button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007BFF;
+            background: #007BFF;
             color: #fff;
+            padding: 10px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            width: 100%;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background: #0056b3;
+        }
+
+        /* Sonuçlar */
+        h2 {
+            margin-top: 20px;
+            color: #444;
+        }
+
+        p {
+            font-size: 18px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Genel Düzenleme */
+        .container {
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1>Hesaplama ve Kaydetme</h1>
+    <h1>En düşük cc yi kesin olarak hesaplama</h1>
     <form>
-        <label for="t">T:</label>
+        <label for="t">T-score değeriniz:</label>
         <input type="number" id="t" placeholder="T değerini giriniz" required>
         <br>
-        <label for="o">O:</label>
+        <label for="o">Ortalamanız:</label>
         <input type="number" id="o" placeholder="O değerini giriniz" required>
         <br>
-        <label for="so">SO:</label>
+        <label for="so">Sınıf ortalaması:</label>
         <input type="number" id="so" placeholder="SO değerini giriniz" required>
         <br><br>
-        <button type="button" onclick="calculateAndSave()">Hesapla ve Kaydet</button>
+        <button type="button" onclick="calculateAndSave()">Hesapla</button>
     </form>
     <script>
         // Firebase yapılandırması
@@ -90,7 +154,7 @@
 
             database.ref('hesaplamalar').push(data)
                 .then(() => {
-                    alert("Veriler başarıyla kaydedildi!");
+                    console.log("Veriler başarıyla kaydedildi!");
                 })
                 .catch((error) => {
                     console.error("Veriler kaydedilirken hata oluştu: ", error);
