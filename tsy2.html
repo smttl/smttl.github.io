@@ -3,50 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hesaplama Web Sitesi</title>
+    <title>Hesaplama ve Realtime Database Kaydetme</title>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             background: #f4f4f9;
             text-align: center;
+            padding: 20px;
+        }
+
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <h1>Hesaplama ve Firestore Kaydetme</h1>
+    <h1>Hesaplama ve Kaydetme</h1>
     <form>
-        <label>T:</label>
-        <input type="number" id="t" required>
+        <label for="t">T:</label>
+        <input type="number" id="t" placeholder="T değerini giriniz" required>
         <br>
-        <label>O:</label>
-        <input type="number" id="o" required>
+        <label for="o">O:</label>
+        <input type="number" id="o" placeholder="O değerini giriniz" required>
         <br>
-        <label>SO:</label>
-        <input type="number" id="so" required>
+        <label for="so">SO:</label>
+        <input type="number" id="so" placeholder="SO değerini giriniz" required>
         <br><br>
         <button type="button" onclick="calculateAndSave()">Hesapla ve Kaydet</button>
     </form>
     <script>
         // Firebase yapılandırması
         const firebaseConfig = {
-          apiKey: "AIzaSyAn5wfCuypXjVxCeBLdEBL7kpjjta-UlQs",
-  authDomain: "cccc-bae13.firebaseapp.com",
-  projectId: "cccc-bae13",
-  storageBucket: "cccc-bae13.firebasestorage.app",
-  messagingSenderId: "636226991727",
-  appId: "1:636226991727:web:186ea608f365d0440d3f9a",
-  measurementId: "G-TDNH8ZTWWE"
+    apiKey: "AIzaSyAn5wfCuypXjVxCeBLdEBL7kpjjta-UlQs",
+    authDomain: "cccc-bae13.firebaseapp.com",
+    projectId: "cccc-bae13",
+    storageBucket: "cccc-bae13.firebasestorage.app",
+    messagingSenderId: "636226991727",
+    appId: "1:636226991727:web:186ea608f365d0440d3f9a",
+    measurementId: "G-TDNH8ZTWWE"
         };
 
         // Firebase başlatma
-        firebase.initializeApp(firebaseConfig); 
-     
         const app = firebase.initializeApp(firebaseConfig);
 
-        // Firestore başlatma
-        const db = firebase.firestore(app);
+        // Realtime Database başlatma
+        const database = firebase.database(app);
 
         // Hesaplama ve kaydetme fonksiyonu
         function calculateAndSave() {
@@ -57,21 +76,24 @@
             // SS hesaplama
             const ss = (o - so) / ((t - 50) / 10);
 
-            // Firestore'a kaydet
-            db.collection("hesaplamalar").add({
+            // Realtime Database'e veriyi kaydet
+            const data = {
                 t: t,
                 o: o,
                 so: so,
                 ss: ss.toFixed(2),
-                timestamp: new Date()
-            })
-            .then(() => {
-                alert("Veriler başarıyla kaydedildi!");
-            })
-            .catch((error) => {
-                console.error("Veriler kaydedilirken hata oluştu: ", error);
-            });
+                timestamp: new Date().toISOString()
+            };
+
+            database.ref('hesaplamalar').push(data)
+                .then(() => {
+                    alert("Veriler başarıyla kaydedildi!");
+                })
+                .catch((error) => {
+                    console.error("Veriler kaydedilirken hata oluştu: ", error);
+                });
         }
     </script>
 </body>
 </html>
+
