@@ -171,7 +171,9 @@
     <!-- JavaScript Kodları -->
     <script>
     
-
+        const app = initializeApp(firebaseConfig);
+          const analytics = getAnalytics(app);
+         const db = getFirestore(app);
         function calculateAndSave() {
             const t = parseFloat(document.getElementById('t').value);
             const o = parseFloat(document.getElementById('o').value);
