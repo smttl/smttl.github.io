@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BVBHNTY8QV');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kesin CC hesaplayıcı</title>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
+    <style>
+        /* Sayfa düzeni ve tasarımı */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #007BFF;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: #444;
+        }
+
+        p {
+            font-size: 18px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>En düşük cc yi kesin olarak hesaplama</h1>
+        <form id="calculation-form">
+            <label for="t">T-scorenuz:</label>
+            <input type="number" id="t" name="t" placeholder="T değerini giriniz" required>
+
+            <label for="o">Ortalamanız:</label>
+            <input type="number" id="o" name="o" placeholder="O değerini giriniz" required>
+
+            <label for="so">Sınıf ortalaması:</label>
+            <input type="number" id="so" name="so" placeholder="SO değerini giriniz" required>
+
+            <button type="button" onclick="calculateAndSave()">Hesapla ve Kaydet</button>
+        </form>
+        <h2>Sonuçlar</h2>
+        <p>SS: <span id="ss-result">-</span></p>
+        <p>Min CC: <span id="min-cc-result">-</span></p>
+    </div>
+
+    <!-- JavaScript Kodları -->
+    <script>
+        // Firebase yapılandırma (kendi firebaseConfig bilgilerinizi buraya ekleyin)
+        const firebaseConfig = {
+        apiKey: "AIzaSyAn5wfCuypXjVxCeBLdEBL7kpjjta-UlQs",
+        authDomain: "cccc-bae13.firebaseapp.com",
+       projectId: "cccc-bae13",
+       storageBucket: "cccc-bae13.firebasestorage.app",
+       messagingSenderId: "636226991727",
+       appId: "1:636226991727:web:186ea608f365d0440d3f9a",
+       measurementId: "G-TDNH8ZTWWE"
+        };
+
+        // Firebase başlatma
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(app);
+
+        function calculateAndSave() {
+            const t = parseFloat(document.getElementById('t').value);
+            const o = parseFloat(document.getElementById('o').value);
+            const so = parseFloat(document.getElementById('so').value);
+
+            // SS Hesaplama
+            const ss = (o - so) / ((t - 50) / 10);
+            document.getElementById('ss-result').innerText = ss.toFixed(2);
+
+            // TS Belirleme
+            let ts = 0;
+            if (so >= 62.50 && so <= 69.99) ts = 41;
+            else if (so >= 57.50 && so < 62.50) ts = 43;
+            else if (so >= 52.50 && so < 57.50) ts = 45;
+            else if (so >= 47.50 && so < 52.50) ts = 47;
+            else if (so >= 42.50 && so < 47.50) ts = 49;
+            else if (so >= 0.00 && so < 42.50) ts = 51;
+
+            // AA Hesaplama
+            const aa = ((50 - ts) / 10) * ss;
+
+            // Min CC Hesaplama
+            const minCc = so - aa;
+            document.getElementById('min-cc-result').innerText = minCc.toFixed(2);
+
+            // Firestore'a verileri kaydet
+            db.collection("hesaplamalar").add({
+                t: t,
+                o: o,
+                so: so,
+                ss: ss.toFixed(2),
+                ts: ts,
+                aa: aa.toFixed(2),
+                minCc: minCc.toFixed(2),
+                timestamp: new Date()
+            })
+            .then(() => {
+                alert("Veriler başarıyla Firestore'a kaydedildi!");
+            })
+            .catch((error) => {
+                console.error("Veriler kaydedilirken hata oluştu: ", error);
+            });
+        }
+    </script>
+</body>
+</html>
