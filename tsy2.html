@@ -128,7 +128,7 @@
             <label for="so">Sınıf ortalaması:</label>
             <input type="number" id="so" name="so" placeholder="SO değerini giriniz" required>
 
-            <button type="button" onclick="calculateAndSave()">Hesapla ve Kaydet</button>
+            <button type="button" onclick="calculateAndSave()">Hesapla</button>
         </form>
         <h2>Sonuçlar</h2>
         <p>SS: <span id="ss-result">-</span></p>
@@ -148,9 +148,8 @@
        measurementId: "G-TDNH8ZTWWE"
         };
 
-        // Firebase başlatma
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore(app);
+      
+    
 
         function calculateAndSave() {
             const t = parseFloat(document.getElementById('t').value);
