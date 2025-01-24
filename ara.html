@@ -75,7 +75,7 @@
         <h2>Harf aralığı Hesaplama </h2>
         <label for="so">Sınıf ortlaması:</label>
         <input type="number" id="so" placeholder="SO değeri">
-        <button onclick="calc()">Hesapla</button>
+        <button onclick="calculate()">Hesapla</button>
         <div id="results" class="result"></div>
         <p class="disclaimer">
             Buradaki sonuçlar tahmine dayalıdır. Hocaların açıkladığı ortalamaların doğruluğuna göre sonuç değişmektedir.
@@ -83,7 +83,7 @@
     </div>
 
     <script>
-        function calc() {
+        function calculate() {
             const so = parseFloat(document.getElementById('so').value);
             let aats, bats, bbts, cbts, ccts, dcts;
 
@@ -104,12 +104,12 @@
                 return;
             }
 
-            const ax = ((aats - 50) / 10) * 11,2 + so;
-            const abx = ((bats - 50) / 10) * 11,2 + so;
-            const bx = ((bbts - 50) / 10) * 11,2 + so;
-            const bcx = ((cbts - 50) / 10) * 11,2 + so;
-            const cx = ((ccts - 50) / 10) * 11,2 + so;
-            const dcx = ((dcts - 50) / 10) * 11,2 + so;
+            const ax = ((aats - 50) / 10) * 9 + so;
+            const abx = ((bats - 50) / 10) * 9 + so;
+            const bx = ((bbts - 50) / 10) * 9 + so;
+            const bcx = ((cbts - 50) / 10) * 9 + so;
+            const cx = ((ccts - 50) / 10) * 9 + so;
+            const dcx = ((dcts - 50) / 10) * 9 + so;
 
             const ranges = [
                 { label: "AA", range: `>= ${ax.toFixed(2)}` },
