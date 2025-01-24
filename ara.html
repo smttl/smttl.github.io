@@ -75,7 +75,7 @@
         <h2>Harf aralığı Hesaplama </h2>
         <label for="so">Sınıf ortlaması:</label>
         <input type="number" id="so" placeholder="SO değeri">
-        <button onclick="calculate()">Hesapla</button>
+        <button onclick="calc()">Hesapla</button>
         <div id="results" class="result"></div>
         <p class="disclaimer">
             Buradaki sonuçlar tahmine dayalıdır. Hocaların açıkladığı ortalamaların doğruluğuna göre sonuç değişmektedir.
@@ -83,7 +83,7 @@
     </div>
 
     <script>
-        function calculate() {
+        function calc() {
             const so = parseFloat(document.getElementById('so').value);
             let aats, bats, bbts, cbts, ccts, dcts;
 
