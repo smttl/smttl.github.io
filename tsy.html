@@ -132,6 +132,7 @@
         <button type="button" onclick="calculate(); calculateAndSave();">Hesapla</button>
 
         <h2>Sonuçlar</h2>
+             <p id="message" style="font-size: 1.2em; font-weight: bold;"></p>
         <p>Standart sapma: <span id="ss-result">-</span></p>
         <p>En düşük CC: <span id="min-cc-result">-</span></p>
          <div id="results" class="result"></div>
@@ -279,6 +280,22 @@
                                <strong>Harf aralığı tablosu:</strong><br>
                 ${tableHTML}
             `;
+        }
+    </script>
+
+   <script>
+        // Başka bir scriptten hesaplanan standart sapma değeri (örnek)
+        const ss // Örneğin, hesaplanan ss değeri bu olsun.
+
+        // Yönetmelik mesajını kontrol etme
+        const message = document.getElementById("message");
+
+        if (ss >= 8 && ss <= 12) {
+            
+            message.style.color = "green"; // Yeşil yazı rengi
+        } else {
+            message.textContent = "Standart sapma yönetmelik gereği 8 ile 12 arasında olmak zorundadır.";
+            message.style.color = "red"; // Kırmızı yazı rengi
         }
     </script>
 
