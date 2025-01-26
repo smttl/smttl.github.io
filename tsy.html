@@ -220,6 +220,24 @@
 
 
             const ss = (o - so) / ((t - 50) / 10);
+
+  const message = document.getElementById("message");
+
+ if (ss >= 8 && ss <= 12) {
+            
+            message.textContent = "Standart sapma yönetmelik gereği 8 ile 12 arasında olmak zorundadır.";
+            message.style.color = "green"; // Yeşil yazı rengi
+        } else {
+            message.textContent = "Standart sapma yönetmelik gereği 8 ile 12 arasında olmak zorundadır.";
+            message.style.color = "red"; // Kırmızı yazı rengi
+        }
+
+
+
+
+
+
+                
            // const so = parseFloat(document.getElementById('so').value);
             let aats, bats, bbts, cbts, ccts, dcts;
 
@@ -284,16 +302,9 @@
 
 
   
-        const message = document.getElementById("message");
+      
 
-        if (ss >= 8 && ss <= 12) {
-            
-            message.textContent = "Standart sapma yönetmelik gereği 8 ile 12 arasında olmak zorundadır.";
-            message.style.color = "green"; // Yeşil yazı rengi
-        } else {
-            message.textContent = "Standart sapma yönetmelik gereği 8 ile 12 arasında olmak zorundadır.";
-            message.style.color = "red"; // Kırmızı yazı rengi
-        }
+       
     </script>
 
 
