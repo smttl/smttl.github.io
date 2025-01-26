@@ -281,21 +281,15 @@
                 ${tableHTML}
             `;
         }
-    </script>
 
-   <script>
-        // Başka bir scriptten hesaplanan standart sapma değeri (örnek)
-        const t = parseFloat(document.getElementById('t').value);
-            const o = parseFloat(document.getElementById('o').value);
-            const so = parseFloat(document.getElementById('so').value);
-            const ss = (o - so) / ((t - 50) / 10);
 
-        // Yönetmelik mesajını kontrol etme
+  
         const message = document.getElementById("message");
 
         if (ss >= 8 && ss <= 12) {
             
-            // Yeşil yazı rengi
+            message.textContent = "Standart sapma yönetmelik gereği 8 ile 12 arasında olmak zorundadır.";
+            message.style.color = "green"; // Yeşil yazı rengi
         } else {
             message.textContent = "Standart sapma yönetmelik gereği 8 ile 12 arasında olmak zorundadır.";
             message.style.color = "red"; // Kırmızı yazı rengi
