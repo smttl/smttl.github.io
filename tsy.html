@@ -171,6 +171,11 @@
 
         // Hesaplama ve kaydetme fonksiyonu
         function calculateAndSave() {
+ if (ad.trim() === "") {
+                alert("Ders adı boş olamaz!");
+                return;
+            }
+                
             const ad = document.getElementById("ad").value;
             const t = parseFloat(document.getElementById('t').value);
             const o = parseFloat(document.getElementById('o').value);
