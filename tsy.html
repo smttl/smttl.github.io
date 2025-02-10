@@ -188,7 +188,8 @@
  // Giriş doğrulama
         if (ad === "") {
             alert("Ders adı boş olamaz!");
-            return calculateAndSave();
+                 window.location.reload()
+            return ;
         }
         if (isNaN(t) || isNaN(o) || isNaN(so)) {
             alert("Lütfen geçerli sayısal değerler giriniz!");
@@ -254,7 +255,7 @@
 
              if (ad === "") {
             alert("Ders adı boş olamaz!");
-            return calculate();
+            return;
         }
 
         if (isNaN(t) || isNaN(o) || isNaN(so)) {
