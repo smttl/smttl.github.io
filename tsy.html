@@ -224,7 +224,12 @@
             const minCc = so - aa;
                
             document.getElementById('min-cc-result').innerText = minCc.toFixed(2);
-         
+          if ( so < 45 {
+            alert("Sınıf ortalaması 45 altı olduğu için yönetmelik geriği en düşük cc 45 dir");
+        } else {
+           
+        }
+
             // Realtime Database'e veriyi kaydet
             const data = {
                     ad: ad,
@@ -255,17 +260,17 @@
         const so = parseFloat(document.getElementById('so').value);
 
              if (ad === "") {
-            alert("Ders adı boş olamaz!");
+          //  alert("Ders adı boş olamaz!");
             return;
         }
 
         if (isNaN(t) || isNaN(o) || isNaN(so)) {
             alert("Lütfen geçerli sayısal değerler giriniz!");
-            return;
+         //   return;
         }
 
         if (t === 50) {
-            alert("t değeri 50 olamaz!");
+          //  alert("t değeri 50 olamaz!");
             return;
         }
 
