@@ -185,12 +185,23 @@
             const o = parseFloat(document.getElementById('o').value);
             const so = parseFloat(document.getElementById('so').value);
 
-                 if (ad.trim() === "") {
-                alert("Ders adı boş olamaz!");
-                         location.reload();
-                return;
-            }
+ // Giriş doğrulama
+        if (ad === "") {
+            alert("Ders adı boş olamaz!");
+            return calculateAndSave();
+        }
+        if (isNaN(t) || isNaN(o) || isNaN(so)) {
+            alert("Lütfen geçerli sayısal değerler giriniz!");
+            return;
+        }
+        if (t === 50) {
+            alert("t değeri 50 olamaz!");
+            return;
+        }
 
+                
+
+               
         // SS Hesaplama
             const ss = (o - so) / ((t - 50) / 10);
             document.getElementById('ss-result').innerText = ss.toFixed(2);
@@ -209,6 +220,7 @@
 
             // Min CC Hesaplama
             const minCc = so - aa;
+                if (minCc < 45) minCc = 45; // Min CC 45'in altındaysa 45 olarak sabitleniyor
             document.getElementById('min-cc-result').innerText = minCc.toFixed(2);
          
             // Realtime Database'e veriyi kaydet
@@ -234,99 +246,105 @@
 
 
  <script>
-        function calculate() {
-            const t = parseFloat(document.getElementById('t').value);
-            const o = parseFloat(document.getElementById('o').value);
-            const so = parseFloat(document.getElementById('so').value);
+    function calculate() {
+             const ad = document.getElementById("ad").value.trim();
+        const t = parseFloat(document.getElementById('t').value);
+        const o = parseFloat(document.getElementById('o').value);
+        const so = parseFloat(document.getElementById('so').value);
 
+             if (ad === "") {
+            alert("Ders adı boş olamaz!");
+            return calculate();
+        }
 
-            const ss = (o - so) / ((t - 50) / 10);
+        if (isNaN(t) || isNaN(o) || isNaN(so)) {
+            alert("Lütfen geçerli sayısal değerler giriniz!");
+            return;
+        }
 
-  const message = document.getElementById("message");
+        if (t === 50) {
+            alert("t değeri 50 olamaz!");
+            return;
+        }
 
- if (ss >= 8 && ss <= 12) {
-            
+        if (so < 0 || so > 100) {
+            alert("SO değeri 0 ile 100 arasında olmalıdır!");
+            return;
+        }
+
+        const ss = (o - so) / ((t - 50) / 10);
+        const message = document.getElementById("message");
+
+        if (ss >= 8 && ss <= 12) {
             message.textContent = "Standart sapma yönetmelik gereği 8 ile 12 arasında olmak zorundadır.";
-            message.style.color = "green"; // Yeşil yazı rengi
+            message.style.color = "green";
         } else {
             message.textContent = "Standart sapma yönetmelik gereği 8 ile 12 arasında olmak zorundadır.";
-            message.style.color = "red"; // Kırmızı yazı rengi
+            message.style.color = "red";
         }
 
+        let aats, bats, bbts, cbts, ccts, dcts;
 
-
-
-
-
-                
-           // const so = parseFloat(document.getElementById('so').value);
-            let aats, bats, bbts, cbts, ccts, dcts;
-
-            if (so >= 62.50 && so <= 69.99) {
-                aats = 61; bats = 56; bbts = 51; cbts = 46; ccts = 41; dcts = 36;
-            } else if (so >= 57.50 && so <= 62.49) {
-                aats = 63; bats = 58; bbts = 53; cbts = 48; ccts = 43; dcts = 38;
-            } else if (so >= 52.50 && so <= 57.49) {
-                aats = 65; bats = 60; bbts = 55; cbts = 50; ccts = 45; dcts = 40;
-            } else if (so >= 47.50 && so <= 52.49) {
-                aats = 67; bats = 62; bbts = 57; cbts = 52; ccts = 47; dcts = 42;
-            } else if (so >= 42.50 && so <= 47.49) {
-                aats = 69; bats = 64; bbts = 59; cbts = 54; ccts = 49; dcts = 44;
-            } else if (so >= 0.00 && so <= 42.49) {
-                aats = 71; bats = 66; bbts = 61; cbts = 56; ccts = 51; dcts = 46;
-            } else {
-                document.getElementById('results').innerHTML = "Lütfen geçerli bir SO değeri giriniz!";
-                return;
-            }
-
-            const ax = ((aats - 50) / 10) * ss + so;
-            const abx = ((bats - 50) / 10) * ss + so;
-            const bx = ((bbts - 50) / 10) * ss + so;
-            const bcx = ((cbts - 50) / 10) * ss + so;
-            const cx = ((ccts - 50) / 10) * ss + so;
-            const dcx = ((dcts - 50) / 10) * ss + so;
-
-            const ranges = [
-                { label: "AA", range: `>= ${ax.toFixed(2)}` },
-                { label: "BA", range: `${abx.toFixed(2)} - ${ax.toFixed(2)}` },
-                { label: "BB", range: `${bx.toFixed(2)} - ${abx.toFixed(2)}` },
-                { label: "CB", range: `${bcx.toFixed(2)} - ${bx.toFixed(2)}` },
-                { label: "CC", range: `${cx.toFixed(2)} - ${bcx.toFixed(2)}` },
-                { label: "DC", range: `${dcx.toFixed(2)} - ${cx.toFixed(2)}` },
-                { label: "FF", range: `< ${dcx.toFixed(2)}` },
-            ];
-
-            let tableHTML = `
-                <table>
-                    <tr>
-                        <th>Kategori</th>
-                        <th>Aralık</th>
-                    </tr>
-            `;
-
-            ranges.forEach(row => {
-                tableHTML += `
-                    <tr>
-                        <td>${row.label}</td>
-                        <td>${row.range}</td>
-                    </tr>
-                `;
-            });
-
-            tableHTML += `</table>`;
-
-            document.getElementById('results').innerHTML = `
-                               <strong>Harf aralığı tablosu:</strong><br>
-                ${tableHTML}
-            `;
+        if (so >= 62.50 && so <= 69.99) {
+            aats = 61; bats = 56; bbts = 51; cbts = 46; ccts = 41; dcts = 36;
+        } else if (so >= 57.50 && so <= 62.49) {
+            aats = 63; bats = 58; bbts = 53; cbts = 48; ccts = 43; dcts = 38;
+        } else if (so >= 52.50 && so <= 57.49) {
+            aats = 65; bats = 60; bbts = 55; cbts = 50; ccts = 45; dcts = 40;
+        } else if (so >= 47.50 && so <= 52.49) {
+            aats = 67; bats = 62; bbts = 57; cbts = 52; ccts = 47; dcts = 42;
+        } else if (so >= 42.50 && so <= 47.49) {
+            aats = 69; bats = 64; bbts = 59; cbts = 54; ccts = 49; dcts = 44;
+        } else if (so >= 0.00 && so <= 42.49) {
+            aats = 71; bats = 66; bbts = 61; cbts = 56; ccts = 45; dcts = 46; // **CC Sabitlendi (45)**
+        } else {
+            document.getElementById('results').innerHTML = "Lütfen geçerli bir SO değeri giriniz!";
+            return;
         }
 
+        const ax = ((aats - 50) / 10) * ss + so;
+        const abx = ((bats - 50) / 10) * ss + so;
+        const bx = ((bbts - 50) / 10) * ss + so;
+        const bcx = ((cbts - 50) / 10) * ss + so;
+        const cx = so <= 45 ? 45 : ((ccts - 50) / 10) * ss + so; // **CC 45'e sabitlendi**
+        const dcx = ((dcts - 50) / 10) * ss + so;
 
-  
-      
+        const ranges = [
+            { label: "AA", range: `>= ${ax.toFixed(2)}` },
+            { label: "BA", range: `${abx.toFixed(2)} - ${ax.toFixed(2)}` },
+            { label: "BB", range: `${bx.toFixed(2)} - ${abx.toFixed(2)}` },
+            { label: "CB", range: `${bcx.toFixed(2)} - ${bx.toFixed(2)}` },
+            { label: "CC", range: so <= 45 ? "45" : `${cx.toFixed(2)} - ${bcx.toFixed(2)}` }, // **CC 45**
+            { label: "DC", range: `${dcx.toFixed(2)} - ${cx.toFixed(2)}` },
+            { label: "FF", range: `< ${dcx.toFixed(2)}` },
+        ];
 
-       
-    </script>
+        let tableHTML = `
+            <table border="1">
+                <tr>
+                    <th>Kategori</th>
+                    <th>Aralık</th>
+                </tr>
+        `;
+
+        ranges.forEach(row => {
+            tableHTML += `
+                <tr>
+                    <td>${row.label}</td>
+                    <td>${row.range}</td>
+                </tr>
+            `;
+        });
+
+        tableHTML += `</table>`;
+
+        document.getElementById('results').innerHTML = `
+            <strong>Harf aralığı tablosu:</strong><br>
+            ${tableHTML}
+        `;
+    }
+</script>
+
 
 
 
