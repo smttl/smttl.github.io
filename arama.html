@@ -102,10 +102,11 @@
         allEntries = [];
 
         Object.values(raw).forEach(entry => {
+          if (!entry.ad) return; // ad yoksa geç
           const key = `${entry.ss}-${entry.minCc}`;
           if (!uniqueRecords[key]) {
             uniqueRecords[key] = true;
-            allEntries.push(entry);
+            allEntries.push(entry); // yalnızca benzersiz ve ad'li kayıtlar
           }
         });
       });
