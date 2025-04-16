@@ -2,51 +2,70 @@
 <html lang="tr">
 <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-BVBHNTY8QV');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-BVBHNTY8QV');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CC Hesaplama</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
         }
         .container {
             max-width: 400px;
-            margin: 0 auto;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
         }
         label, input, button {
             display: block;
-            margin-bottom: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
         button {
             padding: 10px;
             background-color: #007BFF;
             color: white;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 16px;
         }
         button:hover {
             background-color: #0056b3;
         }
         .result {
             margin-top: 20px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 6px;
+            font-size: 16px;
         }
         .disclaimer {
             margin-top: 10px;
-            font-size: 12px;
-            color: #555;
+            font-size: 13px;
+            color: #666;
             font-style: italic;
+            text-align: center;
         }
         footer {
             margin-top: 30px;
@@ -54,48 +73,58 @@
             font-size: 14px;
             color: #555;
         }
+        footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>CC Hesaplama</h1>
-        <label for="so">Sınıf ortalaması:</label>
-        <input type="number" id="so" placeholder="SO değerini girin (ör. 63.00)">
+        <label for="so">Sınıf Ortalaması (SO):</label>
+        <input type="number" id="so" placeholder="0 - 100 arası değer girin" min="0" max="100" step="0.01">
         <button onclick="hesapla()">Hesapla</button>
         <div class="result" id="result"></div>
         <p class="disclaimer">
-            Buradaki sonuçlar tahmine dayalıdır. Hocaların açıkladığı ortalamaların doğruluğuna göre sonuç değişmektedir.
+            Bu hesaplamalar tahmine dayalıdır. Gerçek sonuçlar değişebilir.
         </p>
     </div>
 
     <footer>
-        Samet tarafından yapılmıştır
+        Samet tarafından yapılmıştır<br>
+        <a href="https://www.instagram.com/smttlvt/" target="_blank">
+            Instagram'da beni takip et 📸
+        </a>
     </footer>
 
     <script>
         function hesapla() {
-            const so = parseFloat(document.getElementById('so').value);
+            const input = document.getElementById('so');
+            const so = parseFloat(input.value);
+
+            if (isNaN(so) || so < 0 || so > 100) {
+                document.getElementById('result').innerHTML = "<strong>Lütfen 0 ile 100 arasında geçerli bir sayı giriniz.</strong>";
+                return;
+            }
+
             let ts = 0;
 
-            // TS hesaplama
             if (so >= 62.50 && so <= 69.99) ts = 41;
             else if (so >= 57.50 && so <= 62.49) ts = 43;
             else if (so >= 52.50 && so <= 57.49) ts = 45;
             else if (so >= 47.50 && so <= 52.49) ts = 47;
             else if (so >= 42.50 && so <= 47.49) ts = 49;
-            else if (so >= 0.00 && so <= 42.49) ts = 51;
+            else ts = 51;
 
-            // Formül 1 ve Formül 2
-            const aa = ((50 - ts) / 10) * 8;
-            const bb = ((50 - ts) / 10) * 12;
+            const fark = (50 - ts) / 10;
+            const minCC = so - fark * 8;
+            const maxCC = so - fark * 12;
 
-            // Min ve Max hesaplama
-            const minCC = so - aa;
-            const maxCC = so - bb;
-
-            // Sonuçları gösterme
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = `
+            document.getElementById('result').innerHTML = `
                 <p><strong>SO:</strong> ${so.toFixed(2)}</p>
                 <p><strong>TS:</strong> ${ts}</p>
                 <p><strong>Min CC:</strong> ${minCC.toFixed(2)}</p>
