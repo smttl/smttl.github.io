@@ -2,17 +2,21 @@
 <html lang="tr">
 <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-  gtag('config', 'G-BVBHNTY8QV');
-</script>
+        gtag('config', 'G-BVBHNTY8QV');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sametin Yeri</title>
+    <meta name="description" content="Samet'in Yeri - Harf notu hesaplama araçlarıyla ders analizini kolaylaştır.">
+    <meta property="og:title" content="Samet'in Yeri">
+    <meta property="og:description" content="Harf notu ve sınıf ortalamasına göre hesaplamalar burada.">
+    <meta property="og:type" content="website">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,6 +30,7 @@
         }
         h1 {
             color: #333;
+            font-size: 32px;
         }
         .link {
             display: inline-block;
@@ -36,6 +41,7 @@
             text-decoration: none;
             border-radius: 5px;
             font-size: 18px;
+            transition: background-color 0.3s ease;
         }
         .link:hover {
             background-color: #0056b3;
@@ -45,17 +51,40 @@
             font-size: 14px;
             color: #666;
         }
+        @media (max-width: 600px) {
+            .link {
+                display: block;
+                margin: 10px auto;
+                width: 80%;
+            }
+        }
     </style>
 </head>
 <body>
+    <audio id="bg-music" autoplay loop>
+        <source src="muzik.mp3" type="audio/mpeg">
+        Tarayıcınız ses etiketini desteklemiyor.
+    </audio>
+
+    <script>
+        const audio = document.getElementById('bg-music');
+        window.addEventListener('click', () => {
+            audio.play().catch(e => {
+                console.log("Oynatma engellendi:", e);
+            });
+        });
+    </script>
+
     <div class="container">
-        <h1>Samet'in Yeri</h1>
-        <a href="aa.html" class="link">Harf notu açıklanmadı Sınıf Ortalamasına Göre en düşük cc nin min ve max değerini Hesapla</a>
-        <a href="tsy.html" class="link">Harf notu Açıklanmış Harf Notuna Göre Minimum CC Hesapla</a>
-        <a href="ara.html" class="link">Harf notu açıklanmadı sınıf ortlamasına göre harf notu aralığı hesapla</a>
+        <h1>📘 Samet'in Yeri: Not Hesaplama Aracı</h1>
+        <a href="aa.html" class="link">Sınıf ortalamasına göre en düşük CC'nin min ve max değeri</a>
+        <a href="tsy.html" class="link">Harf notuna göre minimum CC hesapla</a>
+        <a href="ara.html" class="link">Sınıf ortalamasına göre harf notu aralığı hesapla</a>
+        <a href="hayrat.html" class="link">Hayrat</a>
         <div class="footer">
-            <p>Samet tarafından kadim ortacağ bilgileri kullanılarak yapılmıştır</p>
+            <p>Samet tarafından kadim Orta Çağ bilgileriyle yapılmıştır</p>
         </div>
     </div>
 </body>
 </html>
+
