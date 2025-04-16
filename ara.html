@@ -7,7 +7,6 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-BVBHNTY8QV');
     </script>
     <meta charset="UTF-8">
@@ -68,12 +67,27 @@
             background-color: #007bff;
             color: white;
         }
-
         .AA { background-color: #4caf50; color: white; }
         .BA, .BB { background-color: #8bc34a; color: white; }
         .CB, .CC { background-color: #ffeb3b; }
         .DC { background-color: #ff9800; color: white; }
         .FF { background-color: #f44336; color: white; }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+
+        footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -87,6 +101,13 @@
             Buradaki sonuçlar tahmine dayalıdır. Hocaların açıkladığı ortalamaların doğruluğuna göre sonuç değişmektedir.
         </p>
     </div>
+
+    <footer>
+        Samet tarafından yapılmıştır<br>
+        <a href="https://www.instagram.com/smttlvt/" target="_blank">
+            Instagram'da beni takip et 📸
+        </a>
+    </footer>
 
     <script>
         window.onload = () => {
@@ -117,52 +138,5 @@
             } else if (so >= 47.50 && so <= 52.49) {
                 [aats, bats, bbts, cbts, ccts, dcts] = [67, 62, 57, 52, 47, 42];
             } else if (so >= 42.50 && so <= 47.49) {
-                [aats, bats, bbts, cbts, ccts, dcts] = [69, 64, 59, 54, 49, 44];
-            } else {
-                [aats, bats, bbts, cbts, ccts, dcts] = [71, 66, 61, 56, 51, 46];
-            }
+                [aats, bats, bbts, cbts, ccts, dcts] = [69, 64, 59, 54,
 
-            const ax = hesaplaNotEşiği(aats, so);
-            const abx = hesaplaNotEşiği(bats, so);
-            const bx = hesaplaNotEşiği(bbts, so);
-            const bcx = hesaplaNotEşiği(cbts, so);
-            const cx = hesaplaNotEşiği(ccts, so);
-            const dcx = hesaplaNotEşiği(dcts, so);
-
-            const ranges = [
-                { label: "AA", range: `≥ ${ax.toFixed(2)}` },
-                { label: "BA", range: `${abx.toFixed(2)} - ${ax.toFixed(2)}` },
-                { label: "BB", range: `${bx.toFixed(2)} - ${abx.toFixed(2)}` },
-                { label: "CB", range: `${bcx.toFixed(2)} - ${bx.toFixed(2)}` },
-                { label: "CC", range: `${cx.toFixed(2)} - ${bcx.toFixed(2)}` },
-                { label: "DC", range: `${dcx.toFixed(2)} - ${cx.toFixed(2)}` },
-                { label: "FF", range: `< ${dcx.toFixed(2)}` }
-            ];
-
-            let tableHTML = `
-                <table>
-                    <tr>
-                        <th>Kategori</th>
-                        <th>Aralık</th>
-                    </tr>
-            `;
-
-            ranges.forEach(row => {
-                tableHTML += `
-                    <tr class="${row.label}">
-                        <td>${row.label}</td>
-                        <td>${row.range}</td>
-                    </tr>
-                `;
-            });
-
-            tableHTML += `</table>`;
-
-            document.getElementById('results').innerHTML = `
-                
-                ${tableHTML}
-            `;
-        }
-    </script>
-</body>
-</html>
