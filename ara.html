@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-  gtag('config', 'G-BVBHNTY8QV');
-</script>
+        gtag('config', 'G-BVBHNTY8QV');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harf aralığı Hesaplama</title>
+    <title>Harf Aralığı Hesaplama</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -68,13 +68,19 @@
             background-color: #007bff;
             color: white;
         }
+
+        .AA { background-color: #4caf50; color: white; }
+        .BA, .BB { background-color: #8bc34a; color: white; }
+        .CB, .CC { background-color: #ffeb3b; }
+        .DC { background-color: #ff9800; color: white; }
+        .FF { background-color: #f44336; color: white; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Harf aralığı Hesaplama </h2>
-        <label for="so">Sınıf ortlaması:</label>
-        <input type="number" id="so" placeholder="SO değeri">
+        <h2>Harf Aralığı Hesaplama</h2>
+        <label for="so">Sınıf Ortalaması:</label>
+        <input type="number" id="so" placeholder="0 - 100" min="0" max="100">
         <button onclick="calculate()">Hesapla</button>
         <div id="results" class="result"></div>
         <p class="disclaimer">
@@ -83,42 +89,54 @@
     </div>
 
     <script>
-        function calculate() {
-            const so = parseFloat(document.getElementById('so').value);
-            let aats, bats, bbts, cbts, ccts, dcts;
+        window.onload = () => {
+            document.getElementById("so").focus();
+        };
 
-            if (so >= 62.50 && so <= 69.99) {
-                aats = 61; bats = 56; bbts = 51; cbts = 46; ccts = 41; dcts = 36;
-            } else if (so >= 57.50 && so <= 62.49) {
-                aats = 63; bats = 58; bbts = 53; cbts = 48; ccts = 43; dcts = 38;
-            } else if (so >= 52.50 && so <= 57.49) {
-                aats = 65; bats = 60; bbts = 55; cbts = 50; ccts = 45; dcts = 40;
-            } else if (so >= 47.50 && so <= 52.49) {
-                aats = 67; bats = 62; bbts = 57; cbts = 52; ccts = 47; dcts = 42;
-            } else if (so >= 42.50 && so <= 47.49) {
-                aats = 69; bats = 64; bbts = 59; cbts = 54; ccts = 49; dcts = 44;
-            } else if (so >= 0.00 && so <= 42.49) {
-                aats = 71; bats = 66; bbts = 61; cbts = 56; ccts = 51; dcts = 46;
-            } else {
-                document.getElementById('results').innerHTML = "Lütfen geçerli bir SO değeri giriniz!";
+        function hesaplaNotEşiği(taban, ort) {
+            return ((taban - 50) / 10) * 11 + ort;
+        }
+
+        function calculate() {
+            const input = document.getElementById('so');
+            const so = parseFloat(input.value.trim());
+
+            if (!input.value.trim() || isNaN(so) || so < 0 || so > 100) {
+                document.getElementById('results').innerHTML = "Lütfen 0 ile 100 arasında geçerli bir sayı giriniz.";
                 return;
             }
 
-            const ax = ((aats - 50) / 10) * 11 + so;
-            const abx = ((bats - 50) / 10) * 11 + so;
-            const bx = ((bbts - 50) / 10) * 11 + so;
-            const bcx = ((cbts - 50) / 10) * 11 + so;
-            const cx = ((ccts - 50) / 10) * 11 + so;
-            const dcx = ((dcts - 50) / 10) * 11 + so;
+            let aats, bats, bbts, cbts, ccts, dcts;
+
+            if (so >= 62.50 && so <= 69.99) {
+                [aats, bats, bbts, cbts, ccts, dcts] = [61, 56, 51, 46, 41, 36];
+            } else if (so >= 57.50 && so <= 62.49) {
+                [aats, bats, bbts, cbts, ccts, dcts] = [63, 58, 53, 48, 43, 38];
+            } else if (so >= 52.50 && so <= 57.49) {
+                [aats, bats, bbts, cbts, ccts, dcts] = [65, 60, 55, 50, 45, 40];
+            } else if (so >= 47.50 && so <= 52.49) {
+                [aats, bats, bbts, cbts, ccts, dcts] = [67, 62, 57, 52, 47, 42];
+            } else if (so >= 42.50 && so <= 47.49) {
+                [aats, bats, bbts, cbts, ccts, dcts] = [69, 64, 59, 54, 49, 44];
+            } else {
+                [aats, bats, bbts, cbts, ccts, dcts] = [71, 66, 61, 56, 51, 46];
+            }
+
+            const ax = hesaplaNotEşiği(aats, so);
+            const abx = hesaplaNotEşiği(bats, so);
+            const bx = hesaplaNotEşiği(bbts, so);
+            const bcx = hesaplaNotEşiği(cbts, so);
+            const cx = hesaplaNotEşiği(ccts, so);
+            const dcx = hesaplaNotEşiği(dcts, so);
 
             const ranges = [
-                { label: "AA", range: `>= ${ax.toFixed(2)}` },
+                { label: "AA", range: `≥ ${ax.toFixed(2)}` },
                 { label: "BA", range: `${abx.toFixed(2)} - ${ax.toFixed(2)}` },
                 { label: "BB", range: `${bx.toFixed(2)} - ${abx.toFixed(2)}` },
                 { label: "CB", range: `${bcx.toFixed(2)} - ${bx.toFixed(2)}` },
                 { label: "CC", range: `${cx.toFixed(2)} - ${bcx.toFixed(2)}` },
                 { label: "DC", range: `${dcx.toFixed(2)} - ${cx.toFixed(2)}` },
-                { label: "FF", range: `< ${dcx.toFixed(2)}` },
+                { label: "FF", range: `< ${dcx.toFixed(2)}` }
             ];
 
             let tableHTML = `
@@ -131,7 +149,7 @@
 
             ranges.forEach(row => {
                 tableHTML += `
-                    <tr>
+                    <tr class="${row.label}">
                         <td>${row.label}</td>
                         <td>${row.range}</td>
                     </tr>
@@ -141,15 +159,7 @@
             tableHTML += `</table>`;
 
             document.getElementById('results').innerHTML = `
-                <strong>Sonuçlar:</strong><br>
-                AATS (AX): ${ax.toFixed(2)}<br>
-                BATS (ABX): ${abx.toFixed(2)}<br>
-                BBTS (BX): ${bx.toFixed(2)}<br>
-                CBTS (BCX): ${bcx.toFixed(2)}<br>
-                CCTS (CX): ${cx.toFixed(2)}<br>
-                DCTS (DCX): ${dcx.toFixed(2)}<br>
-                <br>
-                <strong>Tablo:</strong><br>
+                
                 ${tableHTML}
             `;
         }
