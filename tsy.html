@@ -1,362 +1,340 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-        <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kesin CC Hesaplayıcı</title>
 
-  gtag('config', 'G-BVBHNTY8QV');
-</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kesin CC hesaplayıcı</title>
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-    <style>
-       /* Genel Sayfa Stili */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f4f4f9;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BVBHNTY8QV');
+  </script>
 
-        /* Başlık */
-        h1 {
-            color: #444;
-            margin-bottom: 20px;
-        }
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-        /* Form Stili */
-        form {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-        }
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 8px;
-        }
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #f0f4f8, #e9eff5);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
 
-        input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
- input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        button {
-            background: #007BFF;
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-        }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 2em;
+    }
 
-        button:hover {
-            background: #0056b3;
-        }
+    form {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      max-width: 420px;
+      width: 90%;
+      transition: all 0.3s ease-in-out;
+    }
 
-        /* Sonuçlar */
-        h2 {
-            margin-top: 20px;
-            color: #444;
-        }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+      color: #444;
+    }
 
-        p {
-            font-size: 18px;
-            background: #fff;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-          table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #007bff;
-            color: white;
-        }
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      background-color: #fafafa;
+      transition: border 0.3s;
+    }
 
-        /* Genel Düzenleme */
-        .container {
-            text-align: center;
-        }
-    </style>
+    input:focus {
+      border-color: #007BFF;
+      outline: none;
+    }
+
+    button {
+      background: #007BFF;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      transition: background 0.3s ease-in-out;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    h2 {
+      margin-top: 30px;
+      color: #333;
+    }
+
+    p {
+      font-size: 17px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      margin: 10px auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: 10px;
+      background-color: #f9f9f9;
+    }
+
+    .container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    footer a {
+      color: #007BFF;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    canvas {
+      margin-top: 30px;
+      max-width: 100%;
+    }
+  </style>
 </head>
 <body>
-    <h1>En düşük cc yi kesin olarak hesaplama</h1>
-    <form>
-           
-        <br> 
-        <label for="ad">Ders Adı:</label>
-        <input type="text" id="ad" placeholder="" required>
-        <label for="t">T-score değeriniz:</label>
-        <input type="number" min="1" id="t" placeholder="Tsore 0 dan büyük olmalı" required>
-        <br>
-        <label for="o">Ortalamanız:</label>
-        <input type="number" id="o" placeholder="" required>
-        <br>
-        <label for="so">Sınıf ortalaması:</label>
-        <input type="number" id="so" placeholder="" required>
-        <br><br>
-        <button type="button" onclick="calculate(); calculateAndSave();">Hesapla</button>
 
-        <h2>Sonuçlar</h2>
-             <p id="message" style="font-size: 1.2em; font-weight: bold;"></p>
-        <p>Standart sapma: <span id="ss-result">-</span></p>
-        <p>En düşük CC: <span id="min-cc-result">-</span></p>
-         <div id="results" class="result"></div>
-       
-    </form>
-        
+  <h1>En Düşük CC'yi Hesapla</h1>
 
-           <footer>
-        <a href="https://www.instagram.com/smttlvt/" target="_blank">Instagram</a>
-        <a href="index.html">Ana Sayfa</a>
-    </footer>
-    <script>
-        // Firebase yapılandırması
-        const firebaseConfig = {
-    apiKey: "AIzaSyAn5wfCuypXjVxCeBLdEBL7kpjjta-UlQs",
-    authDomain: "cccc-bae13.firebaseapp.com",
-    projectId: "cccc-bae13",
-    storageBucket: "cccc-bae13.firebasestorage.app",
-    messagingSenderId: "636226991727",
-    appId: "1:636226991727:web:186ea608f365d0440d3f9a",
-    measurementId: "G-TDNH8ZTWWE"
-        };
+  <form>
+    <label for="ad">Ders Adı:</label>
+    <input type="text" id="ad" required />
 
-        // Firebase başlatma
-        const app = firebase.initializeApp(firebaseConfig);
+    <label for="t">T-score değeriniz:</label>
+    <input type="number" id="t" min="1" placeholder="Tsore 0 dan büyük olmalı" required />
 
-        // Realtime Database başlatma
-        const database = firebase.database(app);
-        let databaseURL = "cccc-bae13-default-rtdb.firebaseio.com";
+    <label for="o">Ortalamanız:</label>
+    <input type="number" id="o" required />
 
-           
+    <label for="so">Sınıf ortalaması:</label>
+    <input type="number" id="so" required />
 
-        // Hesaplama ve kaydetme fonksiyonu
-        function calculateAndSave() {
+    <button type="button" onclick="calculate(); calculateAndSave();">Hesapla</button>
 
-                
-            const ad = document.getElementById("ad").value;
-            const t = parseFloat(document.getElementById('t').value);
-            const o = parseFloat(document.getElementById('o').value);
-            const so = parseFloat(document.getElementById('so').value);
+    <h2>Sonuçlar</h2>
+    <p id="message"></p>
+    <p>Standart sapma: <span id="ss-result">-</span></p>
+    <p>En düşük CC: <span id="min-cc-result">-</span></p>
+    <div id="results"></div>
+    <canvas id="gradeChart" width="400" height="250"></canvas>
+  </form>
 
- // Giriş doğrulama
-        if (ad === "") {
-            alert("Ders adı boş olamaz!");
-          //       window.location.reload()
-            return ;
-        }
-        if (isNaN(t) || isNaN(o) || isNaN(so)) {
-            alert("Lütfen geçerli sayısal değerler giriniz!");
-            return;
-        }
-        if (t === 50) {
-            alert("t değeri 50 olamaz!");
-            return;
-        }
+  <footer>
+    <a href="https://www.instagram.com/smttlvt/" target="_blank">Instagram</a>
+    <a href="index.html">Ana Sayfa</a>
+  </footer>
 
-                
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAn5wfCuypXjVxCeBLdEBL7kpjjta-UlQs",
+      authDomain: "cccc-bae13.firebaseapp.com",
+      projectId: "cccc-bae13",
+      storageBucket: "cccc-bae13.appspot.com",
+      messagingSenderId: "636226991727",
+      appId: "1:636226991727:web:186ea608f365d0440d3f9a",
+      measurementId: "G-TDNH8ZTWWE"
+    };
 
-               
-        // SS Hesaplama
-            const ss = (o - so) / ((t - 50) / 10);
-            document.getElementById('ss-result').innerText = ss.toFixed(2);
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database(app);
 
-            // TS Belirleme
-            let ts = 0;
-            if (so >= 62.50 && so <= 69.99) ts = 41;
-            else if (so >= 57.50 && so < 62.50) ts = 43;
-            else if (so >= 52.50 && so < 57.50) ts = 45;
-            else if (so >= 47.50 && so < 52.50) ts = 47;
-            else if (so >= 42.50 && so < 47.50) ts = 49;
-            else if (so >= 0.00 && so < 42.50) ts = 51;
+    function calculateAndSave() {
+      const ad = document.getElementById("ad").value;
+      const t = parseFloat(document.getElementById('t').value);
+      const o = parseFloat(document.getElementById('o').value);
+      const so = parseFloat(document.getElementById('so').value);
 
-            // AA Hesaplama
-            const aa = ((50 - ts) / 10) * ss;
+      if (ad === "" || isNaN(t) || isNaN(o) || isNaN(so) || t === 50) {
+        alert("Lütfen geçerli bilgiler giriniz!");
+        return;
+      }
 
-            // Min CC Hesaplama
-              // buraya bakkkkkkkkkkkkkkkkkkkkkkkkk 
-            const minCc = so - aa;
-               
-            document.getElementById('min-cc-result').innerText = minCc.toFixed(2);
-          if ( so < 45 ){
-            alert("Sınıf ortalaması 45 altı olduğu için yönetmelik geriği en düşük cc 45 dir");
-        } else {
-           
-        }
+      const ss = (o - so) / ((t - 50) / 10);
+      document.getElementById('ss-result').innerText = ss.toFixed(2);
 
-            // Realtime Database'e veriyi kaydet
-            const data = {
-                    ad: ad,
-                t: t,
-                o: o,
-                so: so,
-                ss: ss.toFixed(2),
-                minCc: minCc,    
-                timestamp: new Date().toISOString()
-            };
+      let ts = 0;
+      if (so >= 62.5) ts = 41;
+      else if (so >= 57.5) ts = 43;
+      else if (so >= 52.5) ts = 45;
+      else if (so >= 47.5) ts = 47;
+      else if (so >= 42.5) ts = 49;
+      else ts = 51;
 
-            database.ref('hesaplamalar').push(data)
-                .then(() => {
-                    console.log("Veriler başarıyla kaydedildi!");
-                })
-                .catch((error) => {
-                    console.error("Veriler kaydedilirken hata oluştu: ", error);
-                });
-        }
-    </script>
+      const aa = ((50 - ts) / 10) * ss;
+      const minCc = so - aa;
+      document.getElementById('min-cc-result').innerText = minCc.toFixed(2);
 
+      if (so < 45) alert("Sınıf ortalaması 45 altı olduğu için en düşük CC = 45'dir.");
 
- <script>
-    function calculate() {
-             const ad = document.getElementById("ad").value.trim();
-        const t = parseFloat(document.getElementById('t').value);
-        const o = parseFloat(document.getElementById('o').value);
-        const so = parseFloat(document.getElementById('so').value);
+      const data = {
+        ad, t, o, so,
+        ss: ss.toFixed(2),
+        minCc: minCc.toFixed(2),
+        timestamp: new Date().toISOString()
+      };
 
-             if (ad === "") {
-          //  alert("Ders adı boş olamaz!");
-            return;
-        }
-
-        if (isNaN(t) || isNaN(o) || isNaN(so)) {
-            alert("Lütfen geçerli sayısal değerler giriniz!");
-         //   return;
-        }
-
-        if (t === 50) {
-          //  alert("t değeri 50 olamaz!");
-            return;
-        }
-
-        if (so < 0 || so > 100) {
-            alert("SO değeri 0 ile 100 arasında olmalıdır!");
-            return;
-        }
-
-        const ss = (o - so) / ((t - 50) / 10);
-        const message = document.getElementById("message");
-
-        if (ss >= 8 && ss <= 12) {
-            message.textContent = "Standart sapma yönetmelik gereği 8 ile 12 arasında olmak zorundadır.";
-            message.style.color = "green";
-        } else {
-            message.textContent = "Standart sapma yönetmelik gereği 8 ile 12 arasında olmak zorundadır.";
-            message.style.color = "red";
-        }
-
-        let aats, bats, bbts, cbts, ccts, dcts;
-
-        if (so >= 62.50 && so <= 69.99) {
-            aats = 61; bats = 56; bbts = 51; cbts = 46; ccts = 41; dcts = 36;
-        } else if (so >= 57.50 && so <= 62.49) {
-            aats = 63; bats = 58; bbts = 53; cbts = 48; ccts = 43; dcts = 38;
-        } else if (so >= 52.50 && so <= 57.49) {
-            aats = 65; bats = 60; bbts = 55; cbts = 50; ccts = 45; dcts = 40;
-        } else if (so >= 47.50 && so <= 52.49) {
-            aats = 67; bats = 62; bbts = 57; cbts = 52; ccts = 47; dcts = 42;
-        } else if (so >= 42.50 && so <= 47.49) {
-            aats = 69; bats = 64; bbts = 59; cbts = 54; ccts = 49; dcts = 44;
-        } else if (so >= 0.00 && so <= 42.49) {
-            aats = 71; bats = 66; bbts = 61; cbts = 56; ccts = 45; dcts = 46; // **CC Sabitlendi (45)**
-        } else {
-            document.getElementById('results').innerHTML = "Lütfen geçerli bir SO değeri giriniz!";
-            return;
-        }
-
-        const ax = ((aats - 50) / 10) * ss + so;
-        const abx = ((bats - 50) / 10) * ss + so;
-        const bx = ((bbts - 50) / 10) * ss + so;
-        const bcx = ((cbts - 50) / 10) * ss + so;
-        const cx = so <= 45 ? 45 : ((ccts - 50) / 10) * ss + so; // **CC 45'e sabitlendi**
-        const dcx = ((dcts - 50) / 10) * ss + so;
-
-        const ranges = [
-            { label: "AA", range: `>= ${ax.toFixed(2)}` },
-            { label: "BA", range: `${abx.toFixed(2)} - ${ax.toFixed(2)}` },
-            { label: "BB", range: `${bx.toFixed(2)} - ${abx.toFixed(2)}` },
-            { label: "CB", range: `${bcx.toFixed(2)} - ${bx.toFixed(2)}` },
-            { label: "CC", range: so <= 45 ? "45" : `${cx.toFixed(2)} - ${bcx.toFixed(2)}` }, // **CC 45**
-            { label: "DC", range: `${dcx.toFixed(2)} - ${cx.toFixed(2)}` },
-            { label: "FF", range: `< ${dcx.toFixed(2)}` },
-        ];
-
-        let tableHTML = `
-            <table border="1">
-                <tr>
-                    <th>Kategori</th>
-                    <th>Aralık</th>
-                </tr>
-        `;
-
-        ranges.forEach(row => {
-            tableHTML += `
-                <tr>
-                    <td>${row.label}</td>
-                    <td>${row.range}</td>
-                </tr>
-            `;
-        });
-
-        tableHTML += `</table>`;
-
-        document.getElementById('results').innerHTML = `
-            <strong>Harf aralığı tablosu:</strong><br>
-            ${tableHTML}
-        `;
+      database.ref('hesaplamalar').push(data)
+        .then(() => console.log("Veri kaydedildi."))
+        .catch(err => console.error("Hata:", err));
     }
-</script>
 
+    function calculate() {
+      const t = parseFloat(document.getElementById('t').value);
+      const o = parseFloat(document.getElementById('o').value);
+      const so = parseFloat(document.getElementById('so').value);
+      const msg = document.getElementById("message");
 
+      if (isNaN(t) || isNaN(o) || isNaN(so) || t === 50 || so < 0 || so > 100) return;
 
+      const ss = (o - so) / ((t - 50) / 10);
 
+      msg.textContent = "Standart sapma yönetmelik gereği 8 ile 12 arasında olmalıdır.";
+      msg.style.color = (ss >= 8 && ss <= 12) ? "green" : "red";
 
+      let aats, bats, bbts, cbts, ccts, dcts;
+      if (so >= 62.5)       { aats = 61; bats = 56; bbts = 51; cbts = 46; ccts = 41; dcts = 36; }
+      else if (so >= 57.5)  { aats = 63; bats = 58; bbts = 53; cbts = 48; ccts = 43; dcts = 38; }
+      else if (so >= 52.5)  { aats = 65; bats = 60; bbts = 55; cbts = 50; ccts = 45; dcts = 40; }
+      else if (so >= 47.5)  { aats = 67; bats = 62; bbts = 57; cbts = 52; ccts = 47; dcts = 42; }
+      else if (so >= 42.5)  { aats = 69; bats = 64; bbts = 59; cbts = 54; ccts = 49; dcts = 44; }
+      else                  { aats = 71; bats = 66; bbts = 61; cbts = 56; ccts = 45; dcts = 46; }
 
+      const ax = ((aats - 50) / 10) * ss + so;
+      const abx = ((bats - 50) / 10) * ss + so;
+      const bx = ((bbts - 50) / 10) * ss + so;
+      const bcx = ((cbts - 50) / 10) * ss + so;
+      const cx = so <= 45 ? 45 : ((ccts - 50) / 10) * ss + so;
+      const dcx = ((dcts - 50) / 10) * ss + so;
+
+      const ranges = [
+        { label: "AA", range: `>= ${ax.toFixed(2)}` },
+        { label: "BA", range: `${abx.toFixed(2)} - ${ax.toFixed(2)}` },
+        { label: "BB", range: `${bx.toFixed(2)} - ${abx.toFixed(2)}` },
+        { label: "CB", range: `${bcx.toFixed(2)} - ${bx.toFixed(2)}` },
+        { label: "CC", range: so <= 45 ? "45" : `${cx.toFixed(2)} - ${bcx.toFixed(2)}` },
+        { label: "DC", range: `${dcx.toFixed(2)} - ${cx.toFixed(2)}` },
+        { label: "FF", range: `< ${dcx.toFixed(2)}` },
+      ];
+
+      let html = `<strong>Harf aralığı tablosu:</strong><table><tr><th>Kategori</th><th>Aralık</th></tr>`;
+      ranges.forEach(row => {
+        html += `<tr><td>${row.label}</td><td>${row.range}</td></tr>`;
+      });
+      html += `</table>`;
+      document.getElementById('results').innerHTML = html;
+
+      // Grafik verisi
+      const chartLabels = ranges.map(r => r.label);
+      const chartData = ranges.map(r => {
+        const nums = r.range.match(/[\d.]+/g);
+        if (!nums) return 0;
+        if (nums.length === 1) return parseFloat(nums[0]);
+        return parseFloat(nums[1]) - parseFloat(nums[0]);
+      });
+
+      const ctx = document.getElementById('gradeChart').getContext('2d');
+      if (window.gradeChart) window.gradeChart.destroy();
+      window.gradeChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: chartLabels,
+          datasets: [{
+            label: 'Harf Notu Aralığı (puan)',
+            data: chartData,
+            backgroundColor: [
+              '#4CAF50', '#2196F3', '#03A9F4', '#FFC107',
+              '#FF9800', '#FF5722', '#F44336'
+            ],
+            borderRadius: 8,
+          }]
+        },
+        options: {
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.parsed.y.toFixed(2)} puanlık aralık`
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Puan Aralığı'
+              }
+            }
+          }
+        }
+      });
+    }
+  </script>
 </body>
 </html>
-
