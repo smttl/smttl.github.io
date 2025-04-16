@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ders Adına Göre Min CC Arama</title>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f4f7fa;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      max-width: 400px;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    #searchResults {
+      width: 100%;
+      max-width: 600px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      font-size: 17px;
+    }
+
+    p {
+      margin: 10px 0;
+      color: #333;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    footer a {
+      color: #007BFF;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Ders Adına Göre Min CC Arama</h1>
+  <input type="text" id="searchInput" placeholder="Ders adı girin..." oninput="searchByDers()" />
+  <div id="searchResults"></div>
+
+  <footer>
+    <a href="index.html">Ana Sayfa</a>
+  </footer>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAn5wfCuypXjVxCeBLdEBL7kpjjta-UlQs",
+      authDomain: "cccc-bae13.firebaseapp.com",
+      projectId: "cccc-bae13",
+      storageBucket: "cccc-bae13.appspot.com",
+      messagingSenderId: "636226991727",
+      appId: "1:636226991727:web:186ea608f365d0440d3f9a",
+      measurementId: "G-TDNH8ZTWWE"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database(app);
+
+    let allEntries = [];
+
+    function loadAllData() {
+      database.ref('hesaplamalar').once('value', snapshot => {
+        const raw = snapshot.val();
+        if (!raw) return;
+
+        const uniqueRecords = {};
+        allEntries = [];
+
+        Object.values(raw).forEach(entry => {
+          const key = `${entry.ss}-${entry.minCc}`;
+          if (!uniqueRecords[key]) {
+            uniqueRecords[key] = true;
+            allEntries.push(entry);
+          }
+        });
+      });
+    }
+
+    function searchByDers() {
+      const query = document.getElementById("searchInput").value.trim().toLowerCase();
+      const resultBox = document.getElementById("searchResults");
+      if (query === "") {
+        resultBox.textContent = "";
+        return;
+      }
+
+      const matched = allEntries.filter(e => e.ad.toLowerCase().includes(query));
+
+      if (matched.length === 0) {
+        resultBox.textContent = "Sonuç bulunamadı.";
+        return;
+      }
+
+      let html = "";
+      matched.forEach(e => {
+        html += `<p><strong>${e.ad}</strong> → Min CC: ${e.minCc}</p>`;
+      });
+
+      resultBox.innerHTML = html;
+    }
+
+    window.onload = () => {
+      loadAllData();
+    };
+  </script>
+
+</body>
+</html>
