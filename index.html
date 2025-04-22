@@ -25,25 +25,39 @@
             background-color: #f4f4f4;
         }
         .container {
-            margin-top: 100px;
+            margin-top: 80px;
+            padding: 0 20px;
         }
         h1 {
             color: #333;
-            font-size: 32px;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+        ul.button-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        ul.button-list li {
+            margin: 10px 0;
         }
         .link {
-            display: inline-block;
-            margin: 20px;
-            padding: 15px 30px;
+            display: block;
+            width: 90%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 15px 20px;
             background-color: #000000;
             color: #fff;
             text-decoration: none;
-            border-radius: 5px;
-            font-size: 18px;
-            transition: background-color 0.3s ease;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .link:hover {
-            background-color: #000000;
+            background-color: #333333;
+            transform: translateY(-2px);
         }
         .footer {
             margin-top: 50px;
@@ -58,10 +72,11 @@
             text-decoration: underline;
         }
         @media (max-width: 600px) {
+            h1 {
+                font-size: 24px;
+            }
             .link {
-                display: block;
-                margin: 10px auto;
-                width: 80%;
+                font-size: 15px;
             }
         }
     </style>
@@ -83,10 +98,12 @@
 
     <div class="container">
         <h1>📘 Samet'in Yeri: Not Hesaplama Aracı</h1>
-        <a href="aa.html" class="link">Sınıf ortalaması belli olduktan sonra en düşük yada en yüksek cc yi hesaplar</a>
-        <a href="tsy.html" class="link">Harf notu açıklandıktan sonra bütünleme için gereken en düşük cc yi hesaplamaya yarar(Kesin sonuç)</a>
-        <a href="ara.html" class="link">Sınıf ortalaması açıklandıktan sonra yaklaşık olarak harf aralıklarını hesaplar</a>
-        <a href="arama.html" class="link">Ders adına göre önceden hesaplanmış verileri inceleme</a>
+        <ul class="button-list">
+            <li><a href="aa.html" class="link">Sınıf ortalaması belli olduktan sonra en düşük veya en yüksek CC'yi hesapla</a></li>
+            <li><a href="tsy.html" class="link">Harf notu açıklandıktan sonra bütünleme için gereken en düşük CC'yi hesapla (Kesin sonuç)</a></li>
+            <li><a href="ara.html" class="link">Sınıf ortalaması açıklandıktan sonra yaklaşık harf aralıklarını hesapla</a></li>
+            <li><a href="arama.html" class="link">Ders adına göre önceden hesaplanmış verileri incele</a></li>
+        </ul>
         <div class="footer">
             <p>Samet tarafından kadim Orta Çağ bilgileriyle yapılmıştır</p>
             <p>
@@ -96,3 +113,4 @@
     </div>
 </body>
 </html>
+
