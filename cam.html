@@ -15,13 +15,28 @@
       background-color: #f0f0f0;
       font-family: sans-serif;
     }
+
     video {
       width: 80%;
       max-width: 640px;
       border: 5px solid #333;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      object-fit: contain;
+      background: black;
     }
+
+    /* Tam ekran modunda videoyu tamamen doldur */
+    video:fullscreen,
+    video:-webkit-full-screen,
+    video:-moz-full-screen {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+      border-radius: 0;
+      object-fit: cover;
+    }
+
     button {
       margin-top: 20px;
       padding: 10px 20px;
@@ -33,6 +48,7 @@
       cursor: pointer;
       transition: background-color 0.3s;
     }
+
     button:hover {
       background-color: #0056b3;
     }
@@ -69,4 +85,5 @@
   </script>
 </body>
 </html>
+
 
