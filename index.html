@@ -1,16 +1,10 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-BVBHNTY8QV');
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#000000">
     <title>Sametin Yeri</title>
 
     <style>
@@ -20,24 +14,30 @@
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            color: #000;
         }
+
         .container {
             margin-top: 80px;
             padding: 0 20px;
         }
+
         h1 {
             color: #333;
             font-size: 28px;
             margin-bottom: 30px;
         }
+
         ul.button-list {
             list-style: none;
             padding: 0;
             margin: 0;
         }
+
         ul.button-list li {
             margin: 10px 0;
         }
+
         .link {
             display: block;
             width: 90%;
@@ -52,47 +52,60 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
+
         .link:hover {
             background-color: #333333;
             transform: translateY(-2px);
         }
+
         .footer {
             margin-top: 50px;
             font-size: 14px;
             color: #666;
         }
+
         .footer a {
             color: #007BFF;
             text-decoration: none;
         }
+
         .footer a:hover {
             text-decoration: underline;
         }
+
         @media (max-width: 600px) {
             h1 {
                 font-size: 24px;
             }
+
             .link {
                 font-size: 15px;
+            }
+        }
+
+        /* 🌙 Koyu mod desteği */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #121212;
+                color: #f5f5f5;
+            }
+
+            .link {
+                background-color: #333;
+                color: #fff;
+            }
+
+            .link:hover {
+                background-color: #444;
+            }
+
+            .footer {
+                color: #aaa;
             }
         }
     </style>
 </head>
 <body>
-    <audio id="bg-music" autoplay loop>
-        <source src="elevator.mp3" type="audio/mpeg">
-        Tarayıcınız ses etiketini desteklemiyor.
-    </audio>
-
-    <script>
-        const audio = document.getElementById('bg-music');
-        window.addEventListener('click', () => {
-            audio.play().catch(e => {
-                console.log("Oynatma engellendi:", e);
-            });
-        });
-    </script>
-
     <div class="container">
         <h1>📘 Samet'in Yeri: Not Hesaplama Aracı</h1>
         <ul class="button-list">
@@ -110,4 +123,3 @@
     </div>
 </body>
 </html>
-
