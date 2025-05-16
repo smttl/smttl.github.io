@@ -1,186 +1,251 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-BVBHNTY8QV');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harf Aralığı Hesaplama</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f9;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            background: #e9ecef;
-            border-radius: 4px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #007bff;
-            color: white;
-        }
-        .AA { background-color: #4caf50; color: white; }
-        .BA, .BB { background-color: #8bc34a; color: white; }
-        .CB, .CC { background-color: #ffeb3b; }
-        .DC { background-color: #ff9800; color: white; }
-        .FF { background-color: #f44336; color: white; }
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-BVBHNTY8QV');
+  </script>
 
-        footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 14px;
-            color: #555;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#000000" />
+  <title>Harf Aralığı Hesaplama</title>
 
-        footer a {
-            color: #007BFF;
-            text-decoration: none;
-        }
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+      background-color: #f4f4f9;
+      color: #000;
+    }
 
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      background: #e9ecef;
+      border-radius: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .AA { background-color: #4caf50; color: white; }
+    .BA, .BB { background-color: #8bc34a; color: white; }
+    .CB, .CC { background-color: #ffeb3b; }
+    .DC { background-color: #ff9800; color: white; }
+    .FF { background-color: #f44336; color: white; }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+    }
+
+    footer a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* 🌙 Koyu Mod Desteği */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #121212;
+        color: #e0e0e0;
+      }
+
+      .container {
+        background-color: #1e1e1e;
+        box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05);
+      }
+
+      input[type="number"] {
+        background-color: #2c2c2c;
+        color: #fff;
+        border: 1px solid #444;
+      }
+
+      button {
+        background-color: #3399ff;
+      }
+
+      button:hover {
+        background-color: #1a73e8;
+      }
+
+      .result {
+        background-color: #2a2a2a;
+        color: #ddd;
+      }
+
+      table, th, td {
+        border-color: #444;
+      }
+
+      th {
+        background-color: #444;
+      }
+
+      td {
+        background-color: #2c2c2c;
+        color: #f0f0f0;
+      }
+
+      footer {
+        color: #aaa;
+      }
+
+      footer a {
+        color: #66bfff;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Harf Aralığı Hesaplama</h2>
-        <label for="so">Sınıf Ortalaması:</label>
-        <input type="number" id="so" placeholder="0 - 100" min="0" max="100">
-        <button onclick="calculate()">Hesapla</button>
-        <div id="results" class="result"></div>
-        <p class="disclaimer">
-            Buradaki sonuçlar tahmine dayalıdır. Hocaların açıkladığı ortalamaların doğruluğuna göre sonuç değişmektedir.
-        </p>
-    </div>
+  <div class="container">
+    <h2>Harf Aralığı Hesaplama</h2>
+    <label for="so">Sınıf Ortalaması:</label>
+    <input type="number" id="so" placeholder="0 - 100" min="0" max="100" />
+    <button onclick="calculate()">Hesapla</button>
+    <div id="results" class="result"></div>
+    <p class="disclaimer">
+      Buradaki sonuçlar tahmine dayalıdır. Hocaların açıkladığı ortalamaların doğruluğuna göre sonuç değişmektedir.
+    </p>
+  </div>
 
-    <footer>
-        <p>Samet tarafından kadim Orta Çağ bilgileriyle yapılmıştır</p>
-        <a href="https://www.instagram.com/smttlvt/" target="_blank">
-            Instagram
-        </a>
-    </footer>
+  <footer>
+    <p>Samet tarafından kadim Orta Çağ bilgileriyle yapılmıştır</p>
+    <a href="https://www.instagram.com/smttlvt/" target="_blank">Instagram</a>
+  </footer>
 
-    <script>
-        window.onload = () => {
-            document.getElementById("so").focus();
-        };
+  <script>
+    window.onload = () => {
+      document.getElementById("so").focus();
+    };
 
-        function hesaplaNotEşiği(taban, ort) {
-            return ((taban - 50) / 10) * 11 + ort;
-        }
+    function hesaplaNotEşiği(taban, ort) {
+      return ((taban - 50) / 10) * 11 + ort;
+    }
 
-        function calculate() {
-            const input = document.getElementById('so');
-            const so = parseFloat(input.value.trim());
+    function calculate() {
+      const input = document.getElementById('so');
+      const so = parseFloat(input.value.trim());
 
-            if (!input.value.trim() || isNaN(so) || so < 0 || so > 100) {
-                document.getElementById('results').innerHTML = "Lütfen 0 ile 100 arasında geçerli bir sayı giriniz.";
-                return;
-            }
+      if (!input.value.trim() || isNaN(so) || so < 0 || so > 100) {
+        document.getElementById('results').innerHTML = "Lütfen 0 ile 100 arasında geçerli bir sayı giriniz.";
+        return;
+      }
 
-            let aats, bats, bbts, cbts, ccts, dcts;
+      let aats, bats, bbts, cbts, ccts, dcts;
 
-            if (so >= 62.50 && so <= 69.99) {
-                [aats, bats, bbts, cbts, ccts, dcts] = [61, 56, 51, 46, 41, 36];
-            } else if (so >= 57.50 && so <= 62.49) {
-                [aats, bats, bbts, cbts, ccts, dcts] = [63, 58, 53, 48, 43, 38];
-            } else if (so >= 52.50 && so <= 57.49) {
-                [aats, bats, bbts, cbts, ccts, dcts] = [65, 60, 55, 50, 45, 40];
-            } else if (so >= 47.50 && so <= 52.49) {
-                [aats, bats, bbts, cbts, ccts, dcts] = [67, 62, 57, 52, 47, 42];
-            } else if (so >= 42.50 && so <= 47.49) {
-                [aats, bats, bbts, cbts, ccts, dcts] = [69, 64, 59, 54, 49, 44];
-            } else {
-                [aats, bats, bbts, cbts, ccts, dcts] = [71, 66, 61, 56, 51, 46];
-            }
+      if (so >= 62.50 && so <= 69.99) {
+        [aats, bats, bbts, cbts, ccts, dcts] = [61, 56, 51, 46, 41, 36];
+      } else if (so >= 57.50 && so <= 62.49) {
+        [aats, bats, bbts, cbts, ccts, dcts] = [63, 58, 53, 48, 43, 38];
+      } else if (so >= 52.50 && so <= 57.49) {
+        [aats, bats, bbts, cbts, ccts, dcts] = [65, 60, 55, 50, 45, 40];
+      } else if (so >= 47.50 && so <= 52.49) {
+        [aats, bats, bbts, cbts, ccts, dcts] = [67, 62, 57, 52, 47, 42];
+      } else if (so >= 42.50 && so <= 47.49) {
+        [aats, bats, bbts, cbts, ccts, dcts] = [69, 64, 59, 54, 49, 44];
+      } else {
+        [aats, bats, bbts, cbts, ccts, dcts] = [71, 66, 61, 56, 51, 46];
+      }
 
-            const ax = hesaplaNotEşiği(aats, so);
-            const abx = hesaplaNotEşiği(bats, so);
-            const bx = hesaplaNotEşiği(bbts, so);
-            const bcx = hesaplaNotEşiği(cbts, so);
-            const cx = hesaplaNotEşiği(ccts, so);
-            const dcx = hesaplaNotEşiği(dcts, so);
+      const ax = hesaplaNotEşiği(aats, so);
+      const abx = hesaplaNotEşiği(bats, so);
+      const bx = hesaplaNotEşiği(bbts, so);
+      const bcx = hesaplaNotEşiği(cbts, so);
+      const cx = hesaplaNotEşiği(ccts, so);
+      const dcx = hesaplaNotEşiği(dcts, so);
 
-            const ranges = [
-                { label: "AA", range: `≥ ${ax.toFixed(2)}` },
-                { label: "BA", range: `${abx.toFixed(2)} - ${ax.toFixed(2)}` },
-                { label: "BB", range: `${bx.toFixed(2)} - ${abx.toFixed(2)}` },
-                { label: "CB", range: `${bcx.toFixed(2)} - ${bx.toFixed(2)}` },
-                { label: "CC", range: `${cx.toFixed(2)} - ${bcx.toFixed(2)}` },
-                { label: "DC", range: `${dcx.toFixed(2)} - ${cx.toFixed(2)}` },
-                { label: "FF", range: `< ${dcx.toFixed(2)}` }
-            ];
+      const ranges = [
+        { label: "AA", range: `≥ ${ax.toFixed(2)}` },
+        { label: "BA", range: `${abx.toFixed(2)} - ${ax.toFixed(2)}` },
+        { label: "BB", range: `${bx.toFixed(2)} - ${abx.toFixed(2)}` },
+        { label: "CB", range: `${bcx.toFixed(2)} - ${bx.toFixed(2)}` },
+        { label: "CC", range: `${cx.toFixed(2)} - ${bcx.toFixed(2)}` },
+        { label: "DC", range: `${dcx.toFixed(2)} - ${cx.toFixed(2)}` },
+        { label: "FF", range: `< ${dcx.toFixed(2)}` }
+      ];
 
-            let tableHTML = `
-                <table>
-                    <tr>
-                        <th>Kategori</th>
-                        <th>Aralık</th>
-                    </tr>
-            `;
+      let tableHTML = `
+        <table>
+          <tr>
+            <th>Kategori</th>
+            <th>Aralık</th>
+          </tr>
+      `;
 
-            ranges.forEach(row => {
-                tableHTML += `
-                    <tr class="${row.label}">
-                        <td>${row.label}</td>
-                        <td>${row.range}</td>
-                    </tr>
-                `;
-            });
+      ranges.forEach(row => {
+        tableHTML += `
+          <tr class="${row.label}">
+            <td>${row.label}</td>
+            <td>${row.range}</td>
+          </tr>
+        `;
+      });
 
-            tableHTML += `</table>`;
-
-            document.getElementById('results').innerHTML = tableHTML;
-        }
-    </script>
+      tableHTML += `</table>`;
+      document.getElementById('results').innerHTML = tableHTML;
+    }
+  </script>
 </body>
 </html>
