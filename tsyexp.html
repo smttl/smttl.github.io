@@ -1,134 +1,177 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nasıl hesaplanır</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            background-color: #ffffff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-radius: 8px;
-        }
-        h1, h2, h3, h4 {
-            color: #007bff;
-        }
-         h1 {
-            color: #000000;
-        }
-        code, pre {
-            background-color: #e9ecef;
-            padding: 10px;
-            border-radius: 6px;
-            display: block;
-            overflow-x: auto;
-        }
-        .note {
-            background-color: #fffbcc;
-            padding: 10px;
-            border-left: 5px solid #ffeb3b;
-            border-radius: 4px;
-            margin: 15px 0;
-        }
-        .warning {
-            background-color: #ffe6e6;
-            padding: 10px;
-            border-left: 5px solid #f44336;
-            border-radius: 4px;
-            margin: 15px 0;
-        }
-        @media (max-width: 600px) {
-            .container {
-                padding: 15px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#000000">
+  <title>Nasıl hesaplanır</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+
+    h1, h2, h3, h4 {
+      color: #007bff;
+    }
+
+    h1 {
+      color: #000000;
+    }
+
+    code, pre {
+      background-color: #e9ecef;
+      padding: 10px;
+      border-radius: 6px;
+      display: block;
+      overflow-x: auto;
+    }
+
+    .note {
+      background-color: #fffbcc;
+      padding: 10px;
+      border-left: 5px solid #ffeb3b;
+      border-radius: 4px;
+      margin: 15px 0;
+    }
+
+    .warning {
+      background-color: #ffe6e6;
+      padding: 10px;
+      border-left: 5px solid #f44336;
+      border-radius: 4px;
+      margin: 15px 0;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+    }
+
+    /* 🌙 Koyu Mod Desteği */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #121212;
+        color: #e0e0e0;
+      }
+
+      .container {
+        background-color: #1e1e1e;
+        box-shadow: 0 2px 8px rgba(255,255,255,0.05);
+      }
+
+      h1, h2, h3, h4 {
+        color: #66bfff;
+      }
+
+      code, pre {
+        background-color: #2c2c2c;
+        color: #ddd;
+      }
+
+      .note {
+        background-color: #444000;
+        border-left-color: #ffff00;
+        color: #f5f5a5;
+      }
+
+      .warning {
+        background-color: #441111;
+        border-left-color: #ff4c4c;
+        color: #f0aaaa;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Kesin CC Hesaplayıcı</h1>
-        <p>Bu proje, derslerde kullanılan <strong>T-score tabanlı not hesaplama sistemi</strong>ne göre, en düşük CC (geçme notunu) kolayca ve yüksek doğrulukla hesaplayabileceğiniz bir web uygulamasıdır.</p>
+  <div class="container">
+    <h1>Kesin CC Hesaplayıcı</h1>
+    <p>Bu proje, derslerde kullanılan <strong>T-score tabanlı not hesaplama sistemi</strong>ne göre, en düşük CC (geçme notunu) kolayca ve yüksek doğrulukla hesaplayabileceğiniz bir web uygulamasıdır.</p>
 
-        <h2>🚀 Proje Özellikleri</h2>
-        <p>Kullanıcıdan:</p>
-        <ul>
-            <li>Ders Adı</li>
-            <li>T-score değeri</li>
-            <li>Öğrencinin ortalaması</li>
-            <li>Sınıf ortalaması</li>
-        </ul>
-        <p>Girilen bilgilere göre:</p>
-        <ul>
-            <li>Standart sapmayı (SS) hesaplar.</li>
-            <li>En düşük CC (geçme notu) değerini belirler.</li>
-            <li>Not aralıklarını (AA, BA, BB, CB, CC, DC, FF) tablo şeklinde gösterir.</li>
-        </ul>
+    <h2>🚀 Proje Özellikleri</h2>
+    <p>Kullanıcıdan:</p>
+    <ul>
+      <li>Ders Adı</li>
+      <li>T-score değeri</li>
+      <li>Öğrencinin ortalaması</li>
+      <li>Sınıf ortalaması</li>
+    </ul>
+    <p>Girilen bilgilere göre:</p>
+    <ul>
+      <li>Standart sapmayı (SS) hesaplar.</li>
+      <li>En düşük CC (geçme notu) değerini belirler.</li>
+      <li>Not aralıklarını (AA, BA, BB, CB, CC, DC, FF) tablo şeklinde gösterir.</li>
+    </ul>
 
-        <h2>🧮 Hesaplama Mantığı</h2>
+    <h2>🧮 Hesaplama Mantığı</h2>
 
-        <!-- Tablo Resmi Buraya Eklendi -->
-<div style="text-align: center; margin: 20px 0;">
-    <img src="https://smttl.github.io/tablo.png" alt="Harf Aralıkları Tablosu" style="max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
-</div>
-        <p>Yönetmelikte verilen formülde T-score değeri, öğrencinin ortalaması ve sınıf ortalamasından standart sapmayı buluyoruz.  
-        Harf aralıklarının denk geldiği T-score aralıklarını tersine çevirip not haline getiriyoruz. Böylece hangi harf aralığının hangi nota denk geldiğini buluyoruz.</p>
-
-         <div style="text-align: center; margin: 20px 0;">
-    <img src="https://smttl.github.io/formul.png" alt="Formül Gösterimi" style="max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
-</div>
-
-        <h3>📌 Standart Sapma</h3>
-        <pre><code>Standart sapma = (Öğrencinin ortalaması - Sınıf ortalaması) / ((T-score - 50) / 10)</code></pre>
-
-        <h3>📌 En Düşük CC (Minimum CC)</h3>
-        <pre><code>Min CC = Sınıf Ortalaması - ((50 - T-score) / 10) * Standart Sapma</code></pre>
-
-        <h2>📌 Notlar</h2>
-        <div class="note">
-            Sınıf ortalaması <strong>45’in altında</strong> ise, sistem otomatik olarak en düşük CC’yi <strong>45</strong> olarak sabitler.
-        </div>
-        <div class="note">
-            Standart sapma <strong>8 ile 12</strong> arasında olmalıdır. Sistem bu durumu renkli uyarı ile belirtir.
-        </div>
-
-        <h1>Ortalama ile Harf Aralığı Hesaplayıcı</h1>
-        <p>Bu proje, T-score tabanlı bağıl not sistemine göre, sadece sınıf ortalamasını girerek harf notlarının hangi aralıklara denk geldiğini hesaplayan bir web uygulamasıdır.</p>
-
-        <h2>🚀 Proje Özellikleri</h2>
-        <ul>
-            <li>Yalnızca sınıf ortalamasını girerek AA'dan FF'ye kadar tüm not aralıklarını yaklaşık olarak hesaplar.</li>
-            <li>Hesaplanan aralıkları renkli bir tablo halinde gösterir.</li>
-        </ul>
-
-        <h2>🧮 Hesaplama Mantığı</h2>
-
-        <!-- Tablo Resmi Buraya Eklendi -->
-<div style="text-align: center; margin: 20px 0;">
-    <img src="https://smttl.github.io/tablo.png" alt="Harf Aralıkları Tablosu" style="max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
-</div>
-        <p>Standart sapma yönetmelik gereği <strong>8 ile 12 arasında</strong> olmak zorundadır. Bu sistem, standart sapmayı <strong>11</strong> kabul ederek sonuca yaklaşmayı hedefler. Formülde standart sapmayı 11 kabul ederek gerçek sonuca yaklaşan bir değeri bulmayı hedefliyoruz.
-Yönetmelikte ortalamaya göre tscore sonuçlarının listelendiği tablodan harf aralıklarınının hangi tscore sonucuna denk geldiğini bulup bunu tersine çevirip Harf aralıklarının hangi puanlara denk geldiğini buluyoruz </p>
-
-        <div style="text-align: center; margin: 20px 0;">
-    <img src="https://smttl.github.io/formul.png" alt="Formül Gösterimi" style="max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
-</div>
-        <pre><code>Not Eşiği = ((Taban T-score - 50) / 10) * 11 + Sınıf Ortalaması</code></pre>
-
-        <h2>⚠️ Uyarılar</h2>
-        <div class="warning">
-            Bu hesaplama <strong>tahmine dayalıdır</strong>. Gerçek not aralıkları ile farklılık gösterebilir.
-        </div>
+    <div style="text-align: center; margin: 20px 0;">
+      <img src="https://smttl.github.io/tablo.png" alt="Harf Aralıkları Tablosu" style="max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
     </div>
+
+    <p>Yönetmelikte verilen formülde T-score değeri, öğrencinin ortalaması ve sınıf ortalamasından standart sapmayı buluyoruz.  
+      Harf aralıklarının denk geldiği T-score aralıklarını tersine çevirip not haline getiriyoruz. Böylece hangi harf aralığının hangi nota denk geldiğini buluyoruz.</p>
+
+    <div style="text-align: center; margin: 20px 0;">
+      <img src="https://smttl.github.io/formul.png" alt="Formül Gösterimi" style="max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
+    </div>
+
+    <h3>📌 Standart Sapma</h3>
+    <pre><code>Standart sapma = (Öğrencinin ortalaması - Sınıf ortalaması) / ((T-score - 50) / 10)</code></pre>
+
+    <h3>📌 En Düşük CC (Minimum CC)</h3>
+    <pre><code>Min CC = Sınıf Ortalaması - ((50 - T-score) / 10) * Standart Sapma</code></pre>
+
+    <h2>📌 Notlar</h2>
+    <div class="note">
+      Sınıf ortalaması <strong>45’in altında</strong> ise, sistem otomatik olarak en düşük CC’yi <strong>45</strong> olarak sabitler.
+    </div>
+    <div class="note">
+      Standart sapma <strong>8 ile 12</strong> arasında olmalıdır. Sistem bu durumu renkli uyarı ile belirtir.
+    </div>
+
+    <h1>Ortalama ile Harf Aralığı Hesaplayıcı</h1>
+    <p>Bu proje, T-score tabanlı bağıl not sistemine göre, sadece sınıf ortalamasını girerek harf notlarının hangi aralıklara denk geldiğini hesaplayan bir web uygulamasıdır.</p>
+
+    <h2>🚀 Proje Özellikleri</h2>
+    <ul>
+      <li>Yalnızca sınıf ortalamasını girerek AA'dan FF'ye kadar tüm not aralıklarını yaklaşık olarak hesaplar.</li>
+      <li>Hesaplanan aralıkları renkli bir tablo halinde gösterir.</li>
+    </ul>
+
+    <h2>🧮 Hesaplama Mantığı</h2>
+
+    <div style="text-align: center; margin: 20px 0;">
+      <img src="https://smttl.github.io/tablo.png" alt="Harf Aralıkları Tablosu" style="max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
+    </div>
+
+    <p>Standart sapma yönetmelik gereği <strong>8 ile 12 arasında</strong> olmak zorundadır. Bu sistem, standart sapmayı <strong>11</strong> kabul ederek sonuca yaklaşmayı hedefler. Yönetmelikte ortalamaya göre tscore sonuçlarının listelendiği tablodan harf aralıklarınının hangi tscore sonucuna denk geldiğini bulup bunu tersine çevirip Harf aralıklarının hangi puanlara denk geldiğini buluyoruz.</p>
+
+    <div style="text-align: center; margin: 20px 0;">
+      <img src="https://smttl.github.io/formul.png" alt="Formül Gösterimi" style="max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
+    </div>
+
+    <pre><code>Not Eşiği = ((Taban T-score - 50) / 10) * 11 + Sınıf Ortalaması</code></pre>
+
+    <h2>⚠️ Uyarılar</h2>
+    <div class="warning">
+      Bu hesaplama <strong>tahmine dayalıdır</strong>. Gerçek not aralıkları ile farklılık gösterebilir.
+    </div>
+  </div>
 </body>
 </html>
