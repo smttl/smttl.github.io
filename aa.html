@@ -1,134 +1,207 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-BVBHNTY8QV');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CC Hesaplama</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-        .container {
-            max-width: 400px;
-            margin: auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        label, input, button {
-            display: block;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-        input[type="number"] {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #e9ecef;
-            border-radius: 6px;
-            font-size: 16px;
-        }
-        .disclaimer {
-            margin-top: 10px;
-            font-size: 13px;
-            color: #666;
-            font-style: italic;
-            text-align: center;
-        }
-        footer {
-            margin-top: 30px;
-            text-align: center;
-            font-size: 14px;
-            color: #555;
-        }
-        footer a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BVBHNTY8QV');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#000000" />
+  <title>CC Hesaplama</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    label,
+    input,
+    button {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #fff;
+      color: #000;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #e9ecef;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .disclaimer {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #666;
+      font-style: italic;
+      text-align: center;
+    }
+
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+    }
+
+    footer a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* 🌙 Koyu Mod Desteği */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #121212;
+        color: #e0e0e0;
+      }
+
+      .container {
+        background-color: #1e1e1e;
+        box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
+      }
+
+      h1 {
+        color: #fff;
+      }
+
+      input[type="number"] {
+        background-color: #2c2c2c;
+        color: #eee;
+        border: 1px solid #444;
+      }
+
+      button {
+        background-color: #3399ff;
+        color: #fff;
+      }
+
+      button:hover {
+        background-color: #227acc;
+      }
+
+      .result {
+        background-color: #2a2a2a;
+        color: #e0e0e0;
+      }
+
+      .disclaimer {
+        color: #aaa;
+      }
+
+      footer {
+        color: #999;
+      }
+
+      footer a {
+        color: #66bfff;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>CC Hesaplama</h1>
-        <label for="so">Sınıf Ortalaması (SO):</label>
-        <input type="number" id="so" placeholder="0 - 100 arası değer girin" min="0" max="100" step="0.01">
-        <button onclick="hesapla()">Hesapla</button>
-        <div class="result" id="result"></div>
-        <p class="disclaimer">
-            Bu hesaplamalar tahmine dayalıdır. Gerçek sonuçlar değişebilir.
-        </p>
-    </div>
+  <div class="container">
+    <h1>CC Hesaplama</h1>
+    <label for="so">Sınıf Ortalaması (SO):</label>
+    <input
+      type="number"
+      id="so"
+      placeholder="0 - 100 arası değer girin"
+      min="0"
+      max="100"
+      step="0.01"
+    />
+    <button onclick="hesapla()">Hesapla</button>
+    <div class="result" id="result"></div>
+    <p class="disclaimer">
+      Bu hesaplamalar tahmine dayalıdır. Gerçek sonuçlar değişebilir.
+    </p>
+  </div>
 
-    <footer>
-       <p>Samet tarafından kadim Orta Çağ bilgileriyle yapılmıştır</p>
-        <a href="https://www.instagram.com/smttlvt/" target="_blank">
-            Instagram
-        </a>
-    </footer>
+  <footer>
+    <p>Samet tarafından kadim Orta Çağ bilgileriyle yapılmıştır</p>
+    <a href="https://www.instagram.com/smttlvt/" target="_blank">Instagram</a>
+  </footer>
 
-    <script>
-        function hesapla() {
-            const input = document.getElementById('so');
-            const so = parseFloat(input.value);
+  <script>
+    function hesapla() {
+      const input = document.getElementById("so");
+      const so = parseFloat(input.value);
 
-            if (isNaN(so) || so < 0 || so > 100) {
-                document.getElementById('result').innerHTML = "<strong>Lütfen 0 ile 100 arasında geçerli bir sayı giriniz.</strong>";
-                return;
-            }
+      if (isNaN(so) || so < 0 || so > 100) {
+        document.getElementById("result").innerHTML =
+          "<strong>Lütfen 0 ile 100 arasında geçerli bir sayı giriniz.</strong>";
+        return;
+      }
 
-            let ts = 0;
+      let ts = 0;
 
-            if (so >= 62.50 && so <= 69.99) ts = 41;
-            else if (so >= 57.50 && so <= 62.49) ts = 43;
-            else if (so >= 52.50 && so <= 57.49) ts = 45;
-            else if (so >= 47.50 && so <= 52.49) ts = 47;
-            else if (so >= 42.50 && so <= 47.49) ts = 49;
-            else ts = 51;
+      if (so >= 62.5 && so <= 69.99) ts = 41;
+      else if (so >= 57.5 && so <= 62.49) ts = 43;
+      else if (so >= 52.5 && so <= 57.49) ts = 45;
+      else if (so >= 47.5 && so <= 52.49) ts = 47;
+      else if (so >= 42.5 && so <= 47.49) ts = 49;
+      else ts = 51;
 
-            const fark = (50 - ts) / 10;
-            const minCC = so - fark * 8;
-            const maxCC = so - fark * 12;
+      const fark = (50 - ts) / 10;
+      const minCC = so - fark * 8;
+      const maxCC = so - fark * 12;
 
-            document.getElementById('result').innerHTML = `
-                <p><strong>Min CC:</strong> ${minCC.toFixed(2)}</p>
-                <p><strong>Max CC:</strong> ${maxCC.toFixed(2)}</p>
-            `;
-        }
-    </script>
+      document.getElementById("result").innerHTML = `
+        <p><strong>Min CC:</strong> ${minCC.toFixed(2)}</p>
+        <p><strong>Max CC:</strong> ${maxCC.toFixed(2)}</p>
+      `;
+    }
+  </script>
 </body>
 </html>
