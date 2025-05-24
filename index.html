@@ -106,20 +106,69 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>📘 Samet'in Yeri: Not Hesaplama Aracı</h1>
-        <ul class="button-list">
-            <li><a href="aa.html" class="link">Sınıf ortalaması belli olduktan sonra en düşük veya en yüksek CC'yi hesapla</a></li>
-            <li><a href="tsy.html" class="link">Harf notu açıklandıktan sonra bütünleme için gereken en düşük CC'yi hesapla (Kesin sonuç)</a></li>
-            <li><a href="ara.html" class="link">Sınıf ortalaması açıklandıktan sonra yaklaşık harf aralıklarını hesapla</a></li>
-            <li><a href="arama.html" class="link">Ders adına göre önceden hesaplanmış verileri incele</a></li>
-        </ul>
-        <div class="footer">
-            <p>Samet tarafından kadim Orta Çağ bilgileriyle yapılmıştır</p>
-            <p>
-                
-            </p>
-        </div>
+
+<!-- 📱 Mobil kullanıcıya tam ekran uygulama uyarısı -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        const playStoreURL = "https://play.google.com/store/apps/details?id=com.smtl.mincc";
+        const appStoreURL = "https://apps.apple.com/us/app/ba%C4%9F%C4%B1l-sistem-cc-hesaplay%C4%B1c%C4%B1/id6745977887";
+
+        if (isMobile) {
+            const overlay = document.createElement("div");
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%;
+                height: 100%;
+                background: #121212;
+                color: white;
+                z-index: 9999;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 30px;
+                box-sizing: border-box;
+            `;
+
+            overlay.innerHTML = `
+                <h2 style="font-size: 22px; margin-bottom: 20px;">📱 Uygulamamız Çıktı!</h2>
+                <p style="font-size: 16px; max-width: 400px; margin-bottom: 30px;">
+                    Tüm özellikleri reklamsız ve eksiksiz şekilde kullanmak için hemen indirin.
+                </p>
+                <div style="display: flex; gap: 15px; flex-direction: column; width: 100%; max-width: 300px; margin-bottom: 20px;">
+                    <a href="${playStoreURL}" style="padding: 12px; background: #34a853; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">📥 Google Play'den İndir</a>
+                    <a href="${appStoreURL}" style="padding: 12px; background: #007aff; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">📥 App Store'dan İndir</a>
+                </div>
+                <button id="closeNotice" style="padding: 10px 20px; background: #555; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer;">
+                    ❌ Kapat 
+                </button>
+            `;
+
+            document.body.appendChild(overlay);
+
+            document.getElementById("closeNotice").addEventListener("click", function () {
+                overlay.remove();
+            });
+        }
+    });
+</script>
+
+<!-- Sayfa içeriği -->
+<div class="container">
+    <h1>📘 Samet'in Yeri: Not Hesaplama Aracı</h1>
+    <ul class="button-list">
+        <li><a href="aa.html" class="link">Sınıf ortalaması belli olduktan sonra en düşük veya en yüksek CC'yi hesapla</a></li>
+        <li><a href="tsy.html" class="link">Harf notu açıklandıktan sonra bütünleme için gereken en düşük CC'yi hesapla (Kesin sonuç)</a></li>
+        <li><a href="ara.html" class="link">Sınıf ortalaması açıklandıktan sonra yaklaşık harf aralıklarını hesapla</a></li>
+        <li><a href="arama.html" class="link">Ders adına göre önceden hesaplanmış verileri incele</a></li>
+    </ul>
+    <div class="footer">
+        <p>Samet tarafından kadim Orta Çağ bilgileriyle yapılmıştır</p>
     </div>
+</div>
+
 </body>
 </html>
