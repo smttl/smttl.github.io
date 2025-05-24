@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kesin CC Hesaplama ve Kayıt Listesi</title>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f2f5;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        form, .stock-list-container {
+            background: #fff;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 800px;
+        }
+        label, input {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+        }
+        #message {
+            text-align: center;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        #searchInput {
+            margin-bottom: 15px;
+            padding: 8px;
+            width: 100%;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>En Düşük CC'yi Hesapla</h1>
+    <form>
+        <label>Ders Adı:</label>
+        <input type="text" id="ad">
+
+        <label>T-score:</label>
+        <input type="number" id="t">
+
+        <label>Ortalama:</label>
+        <input type="number" id="o">
+
+        <label>Sınıf Ortalaması:</label>
+        <input type="number" id="so">
+
+        <button type="button" onclick="calculate(); calculateAndSave();">Hesapla</button>
+
+        <p id="message"></p>
+        <p>Standart sapma: <span id="ss-result">-</span></p>
+        <p>En düşük CC: <span id="min-cc-result">-</span></p>
+        <div id="results"></div>
+    </form>
+
+    <div class="stock-list-container">
+        <h2>🧾 Hesaplama Geçmişi</h2>
+        <input type="text" id="searchInput" placeholder="Ders adına göre ara..." onkeyup="filterTable()">
+        <table id="stockTable">
+            <thead>
+                <tr>
+                    <th>Ders</th>
+                    <th>Ortalama</th>
+                    <th>Sınıf Ort.</th>
+                    <th>T-score</th>
+                    <th>SS</th>
+                    <th>Min CC</th>
+                    <th>Tarih</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAn5wfCuypXjVxCeBLdEBL7kpjjta-UlQs",
+            authDomain: "cccc-bae13.firebaseapp.com",
+            projectId: "cccc-bae13",
+            storageBucket: "cccc-bae13.appspot.com",
+            messagingSenderId: "636226991727",
+            appId: "1:636226991727:web:186ea608f365d0440d3f9a"
+        };
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database(app);
+
+        function calculate() {
+            const t = parseFloat(document.getElementById('t').value);
+            const o = parseFloat(document.getElementById('o').value);
+            const so = parseFloat(document.getElementById('so').value);
+            if (isNaN(t) || isNaN(o) || isNaN(so) || t === 50) return;
+
+            const ss = (o - so) / ((t - 50) / 10);
+            document.getElementById('ss-result').innerText = ss.toFixed(2);
+
+            let ts = so >= 62.5 ? 41 : so >= 57.5 ? 43 : so >= 52.5 ? 45 : so >= 47.5 ? 47 : so >= 42.5 ? 49 : 51;
+            const aa = ((50 - ts) / 10) * ss;
+            const minCc = Math.max(so - aa, 45);
+
+            document.getElementById('min-cc-result').innerText = minCc.toFixed(2);
+            document.getElementById("message").innerText = (ss >= 8 && ss <= 12) ? "Standart sapma uygun" : "Standart sapma 8-12 arası olmalı!";
+        }
+
+        function calculateAndSave() {
+            const ad = document.getElementById('ad').value;
+            const t = parseFloat(document.getElementById('t').value);
+            const o = parseFloat(document.getElementById('o').value);
+            const so = parseFloat(document.getElementById('so').value);
+            const ss = ((o - so) / ((t - 50) / 10)).toFixed(2);
+            let ts = so >= 62.5 ? 41 : so >= 57.5 ? 43 : so >= 52.5 ? 45 : so >= 47.5 ? 47 : so >= 42.5 ? 49 : 51;
+            const minCc = Math.max(so - ((50 - ts) / 10) * ss, 45).toFixed(2);
+
+            const data = { ad, t, o, so, ss, minCc, timestamp: new Date().toISOString() };
+            db.ref('hesaplamalar').push(data).then(() => loadListView());
+        }
+
+        function loadListView() {
+            const tableBody = document.getElementById("tableBody");
+            db.ref('hesaplamalar').orderByChild('timestamp').limitToLast(100).once('value', snapshot => {
+                let html = "";
+                const data = [];
+                snapshot.forEach(child => data.push(child.val()));
+                data.reverse().forEach(item => {
+                    html += `<tr>
+                        <td>${item.ad}</td>
+                        <td>${item.o}</td>
+                        <td>${item.so}</td>
+                        <td>${item.t}</td>
+                        <td>${item.ss}</td>
+                        <td>${item.minCc}</td>
+                        <td>${new Date(item.timestamp).toLocaleString("tr-TR")}</td>
+                    </tr>`;
+                });
+                tableBody.innerHTML = html;
+            });
+        }
+
+        function filterTable() {
+            const filter = document.getElementById("searchInput").value.toLowerCase();
+            const rows = document.querySelectorAll("#stockTable tbody tr");
+            rows.forEach(row => {
+                const ders = row.cells[0].textContent.toLowerCase();
+                row.style.display = ders.includes(filter) ? "" : "none";
+            });
+        }
+
+        window.onload = loadListView;
+    </script>
+
+</body>
+</html>

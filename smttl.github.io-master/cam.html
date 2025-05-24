@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kamera Görüntüsü</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #000;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      text-align: center;
+      padding: 20px 0 10px;
+      background-color: #000;
+    }
+
+    header img {
+      height: 100px;
+      max-width: 80%;
+    }
+
+    video {
+      width: 80%;
+      max-width: 640px;
+      object-fit: contain;
+      background: black;
+      border: 5px solid #333;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    video:fullscreen,
+    video:-webkit-full-screen,
+    video:-moz-full-screen {
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain;
+      border: none;
+      border-radius: 0;
+    }
+
+    button {
+      margin: 20px 0;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="ivsa_konya.svg" alt="IVSA Konya Amblemi" />
+  </header>
+
+  <video id="kamera" autoplay playsinline></video>
+  <button id="fullscreenBtn">Tam Ekran</button>
+
+  <script>
+    const video = document.getElementById('kamera');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+      })
+      .catch(err => {
+        console.error("Kameraya erişilemedi:", err);
+        alert("Kamera izni verilmedi veya cihaz bulunamadı.");
+      });
+
+    fullscreenBtn.addEventListener('click', () => {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      } else if (video.msRequestFullscreen) {
+        video.msRequestFullscreen();
+      }
+    });
+  </script>
+</body>
+</html>
+
