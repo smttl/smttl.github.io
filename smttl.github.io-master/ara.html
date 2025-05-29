@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-BVBHNTY8QV');
-  </script>
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light dark" />
@@ -40,6 +31,8 @@
       margin: 10px 0;
       border: 1px solid #ccc;
       border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 16px;
     }
 
     button {
@@ -49,6 +42,7 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      font-size: 16px;
     }
 
     button:hover {
@@ -104,7 +98,6 @@
       text-decoration: underline;
     }
 
-    /* 🌙 Koyu Mod Desteği */
     @media (prefers-color-scheme: dark) {
       body {
         background-color: #121212;
@@ -172,7 +165,6 @@
 
   <footer>
     <p>Samet tarafından kadim Orta Çağ bilgileriyle yapılmıştır</p>
-
   </footer>
 
   <script>
@@ -190,7 +182,16 @@
 
       if (!input.value.trim() || isNaN(so) || so < 0 || so > 100) {
         document.getElementById('results').innerHTML = "Lütfen 0 ile 100 arasında geçerli bir sayı giriniz.";
+        input.style.border = "2px solid red";
         return;
+      }
+
+      if (so > 70) {
+        document.getElementById('results').innerHTML = "⚠️ Bağıl sistem uygulanabilmesi için sınıf ortalaması 70'in altında olmalıdır.";
+        input.style.border = "2px solid red";
+        return;
+      } else {
+        input.style.border = "";
       }
 
       let aats, bats, bbts, cbts, ccts, dcts;
