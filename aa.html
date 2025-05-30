@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <!-- Google tag (gtag.js) -->
@@ -193,10 +193,10 @@
       else ts = 51;
 
       const fark = (50 - ts) / 10;
-      let minCC = so - fark * 8;
-      let maxCC = so - fark * 12;
+      let minCC = so - fark * 12;
+      let maxCC = so - fark * 8;
 
-      if (maxCC > 60) maxCC = 60;
+      if (minCC > 60) minCC = 60;
 
       document.getElementById("result").innerHTML = `
         <p><strong>CC Alt sınırı:</strong> ${minCC.toFixed(2)}</p>
