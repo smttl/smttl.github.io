@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="tr">
 <head>
   <!-- Google tag (gtag.js) -->
@@ -156,13 +156,13 @@
     <input
       type="number"
       id="so"
-      placeholder="0 - 100 arası değer girin"
+      placeholder="0 - 70 arası değer girin"
       min="0"
-      max="100"
+      max="70"
       step="0.01"
     />
     <button onclick="hesapla()">Hesapla</button>
-    <div class="result" id="result"></div>
+    <div class="result" id="result" aria-live="polite"></div>
     <p class="disclaimer">
       Bu hesaplamalar tahmine dayalıdır. Gerçek sonuçlar değişebilir.
     </p>
@@ -170,7 +170,6 @@
 
   <footer>
     <p>Samet tarafından kadim Orta Çağ bilgileriyle yapılmıştır</p>
-    
   </footer>
 
   <script>
@@ -178,9 +177,9 @@
       const input = document.getElementById("so");
       const so = parseFloat(input.value);
 
-      if (isNaN(so) || so < 0 || so > 100) {
+      if (isNaN(so) || so < 0 || so > 70) {
         document.getElementById("result").innerHTML =
-          "<strong>Lütfen 0 ile 100 arasında geçerli bir sayı giriniz.</strong>";
+          "<strong>Lütfen 0 ile 70 arasında geçerli bir sayı giriniz.</strong>";
         return;
       }
 
@@ -194,8 +193,10 @@
       else ts = 51;
 
       const fark = (50 - ts) / 10;
-      const minCC = so - fark * 8;
-      const maxCC = so - fark * 12;
+      let minCC = so - fark * 8;
+      let maxCC = so - fark * 12;
+
+      if (maxCC > 60) maxCC = 60;
 
       document.getElementById("result").innerHTML = `
         <p><strong>CC Alt sınırı:</strong> ${minCC.toFixed(2)}</p>
