@@ -196,12 +196,17 @@
       let minCC = so - fark * 12;
       let maxCC = so - fark * 8;
 
-      if (minCC > 60) minCC = 60;
+      let output = "";
 
-      document.getElementById("result").innerHTML = `
-        <p><strong>CC Alt sınırı:</strong> ${minCC.toFixed(2)}</p>
-        <p><strong>CC Üst sınırı:</strong> ${maxCC.toFixed(2)}</p>
-      `;
+      if (minCC > 60) {
+        minCC = 60;
+        output += `<p><strong>CC Alt sınırı:</strong> ${minCC.toFixed(2)}</p>`;
+      } else {
+        output += `<p><strong>CC Alt sınırı:</strong> ${minCC.toFixed(2)}</p>`;
+        output += `<p><strong>CC Üst sınırı:</strong> ${maxCC.toFixed(2)}</p>`;
+      }
+
+      document.getElementById("result").innerHTML = output;
     }
   </script>
 </body>
