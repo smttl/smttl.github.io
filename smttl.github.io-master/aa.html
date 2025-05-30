@@ -162,8 +162,7 @@
       if (maxCC > 60) maxCC = 60;
 
       const output = `
-        <p><strong>CC Alt sınırı:</strong> ${minCC.toFixed(2)}</p>
-        <p><strong>CC Üst sınırı:</strong> ${maxCC.toFixed(2)}</p>
+         <p> CC başlangıcı <strong>${minCC.toFixed(2)} </strong> ile <strong> ${maxCC.toFixed(2)}</strong> arasında olabilir </p>
       `;
       document.getElementById("result").innerHTML = output;
     }
