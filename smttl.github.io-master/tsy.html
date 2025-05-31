@@ -7,7 +7,6 @@
   <meta name="theme-color" content="#000000" />
   <title>Kesin CC Hesaplayıcı</title>
 
-  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-BVBHNTY8QV"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -18,7 +17,6 @@
     gtag('config', 'G-BVBHNTY8QV');
   </script>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -129,7 +127,6 @@
 
     td {
       padding: 10px;
-      background-color: #f9f9f9;
     }
 
     .container {
@@ -153,7 +150,60 @@
       text-decoration: underline;
     }
 
-    /* 🌙 Koyu Mod */
+    /* Tooltip stilleri */
+    .tooltip-wrapper {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      color: #007BFF;
+      font-size: 14px;
+      margin-left: 6px;
+    }
+
+    .tooltip-text {
+      visibility: hidden;
+      width: 220px;
+      background-color: #333;
+      color: #fff;
+      text-align: left;
+      border-radius: 6px;
+      padding: 8px;
+      position: absolute;
+      z-index: 10;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 13px;
+    }
+
+    .tooltip-wrapper:hover .tooltip-text,
+    .tooltip-wrapper:active .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .tooltip-text::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -6px;
+      border-width: 6px;
+      border-style: solid;
+      border-color: #333 transparent transparent transparent;
+    }
+
+    /* Harf notu renk geçişi: yeşilden kırmızıya */
+    .grade-AA { background-color: #4caf50; color: white; }
+    .grade-BA { background-color: #8bc34a; color: black; }
+    .grade-BB { background-color: #cddc39; color: black; }
+    .grade-CB { background-color: #ffeb3b; color: black; }
+    .grade-CC { background-color: #ff9800; color: white; }
+    .grade-DC { background-color: #ff5722; color: white; }
+    .grade-FF { background-color: #f44336; color: white; }
+
     @media (prefers-color-scheme: dark) {
       body {
         background: linear-gradient(to right, #1a1a1a, #2a2a2a);
@@ -223,16 +273,31 @@
     <label for="ad">Ders Adı:</label>
     <input type="text" id="ad" required />
 
-    <label for="t">T-score değeriniz:</label>
+    <label for="t">
+      T-score değeriniz:
+      <span class="tooltip-wrapper">❓
+        <span class="tooltip-text">T-score değerini obiste son yıl notları kısmından bulabilirsin.</span>
+      </span>
+    </label>
     <input type="number" id="t" min="1" placeholder="T-score 0'dan büyük olmalı" required />
 
     <label for="o">Ortalamanız:</label>
     <input type="number" id="o" required />
 
-    <label for="so">Sınıf ortalaması:</label>
+    <label for="so">
+      Sınıf ortalaması:
+      <span class="tooltip-wrapper">❓
+        <span class="tooltip-text">Sınıf ortalaması değerini obiste son yıl notları kısmından bulabilirsin.</span>
+      </span>
+    </label>
     <input type="number" id="so" required />
 
     <button type="button" onclick="calculate(); calculateAndSave();">Hesapla</button>
+     <div style="text-align: center; margin-top: 20px;">
+    <a href="gecmis.html">
+      <button type="button">Geçmişi Gör</button>
+    </a>
+  </div>
 
     <h2>Sonuçlar</h2>
     <p id="message"></p>
@@ -240,11 +305,8 @@
     <p>En düşük CC: <span id="min-cc-result">-</span></p>
     <div id="results"></div>
   </form>
+ 
 
-  <footer>
-    <p>Samet tarafından kadim Orta Çağ bilgileriyle yapılmıştır</p>
-  
-  </footer>
 
   <script>
     const firebaseConfig = {
@@ -339,7 +401,7 @@
 
       let html = `<strong>Harf aralığı tablosu:</strong><table><tr><th>Kategori</th><th>Aralık</th></tr>`;
       ranges.forEach(row => {
-        html += `<tr><td>${row.label}</td><td>${row.range}</td></tr>`;
+        html += `<tr class="grade-${row.label}"><td>${row.label}</td><td>${row.range}</td></tr>`;
       });
       html += `</table>`;
       document.getElementById('results').innerHTML = html;
