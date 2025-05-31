@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geçmiş Hesaplamalar</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #007BFF;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 14px;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #007BFF;
+      color: white;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #007BFF;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Geçerli standart sapma (8-12) aralığında olan satırlar için */
+    .valid-ss {
+      background-color: #d4edda !important;
+      color: #155724;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Geçmiş Hesaplamalar</h1>
+  <table id="history-table">
+    <thead>
+      <tr>
+        <th>Ders</th>
+        <th>T-score</th>
+        <th>Ortalama</th>
+        <th>Sınıf Ort.</th>
+        <th>Standart Sapma</th>
+        <th>Min CC</th>
+        <th>Tarih</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div style="text-align: center;">
+    <a href="index.html">← Ana Sayfaya Dön</a>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAn5wfCuypXjVxCeBLdEBL7kpjjta-UlQs",
+      authDomain: "cccc-bae13.firebaseapp.com",
+      projectId: "cccc-bae13",
+      storageBucket: "cccc-bae13.appspot.com",
+      messagingSenderId: "636226991727",
+      appId: "1:636226991727:web:186ea608f365d0440d3f9a",
+      measurementId: "G-TDNH8ZTWWE"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database(app);
+    const tbody = document.querySelector("#history-table tbody");
+
+    db.ref("hesaplamalar").once("value")
+      .then(snapshot => {
+        const data = snapshot.val();
+        if (!data) {
+          tbody.innerHTML = "<tr><td colspan='7'>Hiç veri yok.</td></tr>";
+          return;
+        }
+
+        const rows = Object.values(data).reverse();
+        rows.forEach(item => {
+          const tr = document.createElement("tr");
+          const ss = parseFloat(item.ss);
+          if (ss >= 8 && ss <= 12) {
+            tr.classList.add("valid-ss");
+          }
+
+          tr.innerHTML = `
+            <td>${item.ad}</td>
+            <td>${item.t}</td>
+            <td>${item.o}</td>
+            <td>${item.so}</td>
+            <td>${item.ss}</td>
+            <td>${item.minCc}</td>
+            <td>${new Date(item.timestamp).toLocaleString('tr-TR')}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        console.error("Veri alınamadı:", err);
+        tbody.innerHTML = "<tr><td colspan='7'>Veri alınamadı.</td></tr>";
+      });
+  </script>
+</body>
+</html>
