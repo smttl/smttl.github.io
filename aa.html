@@ -123,7 +123,7 @@
     <h1>CC Hesaplama</h1>
     <label for="so">Sınıf Ortalaması (vize + final):</label>
     <input type="number" id="so" placeholder="0 - 70 arası değer girin" min="0" max="70" step="0.01" />
-    <button onclick="hesapla()">Hesapla</button>
+    <button onclick="hesapla(); showSupportOverlayWithCounter(); ">Hesapla</button>
     <div class="result" id="result" aria-live="polite"></div>
     <p class="disclaimer">
       Bu hesaplamalar tahmine dayalıdır. Gerçek sonuçlar değişebilir.
@@ -168,5 +168,59 @@
       document.getElementById("result").innerHTML = output;
     }
   </script>
+<script>
+  function showSupportOverlayWithCounter() {
+    // localStorage'dan tıklama sayısını al, yoksa sıfır olarak başlat
+    let clickCount = parseInt(localStorage.getItem("hesaplaClickCount")) || 0;
+    clickCount += 1;
+    localStorage.setItem("hesaplaClickCount", clickCount);
+
+    // Her 3. tıklamada bir göster
+    if (clickCount % 1 === 0) {
+      const overlay = document.createElement("div");
+      overlay.style.cssText = `
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        background: #121212;
+        color: white;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 30px;
+        box-sizing: border-box;
+      `;
+
+      overlay.innerHTML = `
+        <img src="logo.png" alt="Uygulama Logosu" style="width: 100px; height: 100px; border-radius: 20px; margin-bottom: 20px;">
+        <h2 style="font-size: 22px; margin-bottom: 20px;">🎁 Uygulamayı İndirerek Destek Olun!</h2>
+        <p style="font-size: 16px; max-width: 400px; margin-bottom: 30px;">
+          Bu uygulama tamamen ücretsiz. Eğer işine yaradıysa, uygulamayı indirip birşeyler ısmarlayarak destek olabilirsin  ❤️
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 250px; margin-bottom: 20px;">
+          <a href="https://play.google.com/store/apps/details?id=com.smtl.mincc" target="_blank" style="display: flex; justify-content: center;">
+            <img src="google-play-badge.png" alt="Google Play" style="height: 50px;" />
+          </a>
+          <a href="https://apps.apple.com/us/app/ba%C4%9F%C4%B1l-sistem-cc-hesaplay%C4%B1c%C4%B1/id6745977887" target="_blank" style="display: flex; justify-content: center;">
+            <img src="app-store-badge.png" alt="App Store" style="height: 50px;" />
+          </a>
+        </div>
+        <button id="closeSupport" style="padding: 10px 20px; background: #555; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer;">
+          ❌ Hesaplamayı Gör
+        </button>
+      `;
+
+      document.body.appendChild(overlay);
+
+      document.getElementById("closeSupport").addEventListener("click", function () {
+        overlay.remove();
+      });
+    }
+  }
+</script>  
 </body>
 </html>
