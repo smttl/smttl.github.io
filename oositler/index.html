@@ -325,7 +325,7 @@
         function displayImage() {
             if (currentIndex < IMAGE_FILES.length) {
                 const imageName = IMAGE_FILES[currentIndex];
-                imageDisplay.src = `/${imageName}`;
+            imageDisplay.src = imageName;
                 progressText.innerText = `Resim ${currentIndex + 1} / ${IMAGE_FILES.length} (${imageName})`;
             } else {
                 imageDisplay.style.display = 'none';
