@@ -356,7 +356,7 @@
         
         // --- YENİ EKLENEN RESETLEME FONKSİYONU ---
         resetBtn.onclick = () => {
-            if (confirm("Emin misiniz? Tarayıcı hafızasındaki TÜM etiketler silinecek! (İndirdiğiniz CSV dosyası etkilenmez)")) {
+            if (confirm(" Tarayıcı hafızasındaki TÜM etiketler silinecek! (İndirdiğiniz CSV dosyası etkilenmez)")) {
                 // Tarayıcı hafızasını temizle
                 localStorage.removeItem(ANNOTATION_KEY);
                 alert("Tüm etiketler başarıyla sıfırlandı.");
