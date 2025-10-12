@@ -9,10 +9,13 @@
         #container { max-width: 800px; width: 100%; background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); text-align: center; }
         #image-display { max-width: 100%; max-height: 512px; border: 1px solid #ddd; margin-top: 15px;}
         #button-container { margin-top: 20px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
-        .class-btn, #download-btn { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; }
-        .class-btn { background-color: #007bff; color: white; }
-        #download-btn { background-color: #28a745; color: white; margin-top: 20px; }
+        .class-btn { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; background-color: #007bff; color: white; }
         #progress { margin-top: 15px; font-size: 18px; color: #555; }
+        /* --- YENİ EKLENEN STİLLER --- */
+        #controls { margin-top: 20px; display: flex; gap: 10px; justify-content: center; }
+        .control-btn { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; color: white; }
+        #download-btn { background-color: #28a745; }
+        #reset-btn { background-color: #dc3545; }
     </style>
 </head>
 <body>
@@ -22,19 +25,16 @@
         <p id="progress">Yükleniyor...</p>
         <img id="image-display" src="" alt="Etiketlenecek Görüntü">
         <div id="button-container"></div>
-        <button id="download-btn">Etiketleri CSV Olarak İndir</button>
+        <div id="controls">
+            <button id="download-btn" class="control-btn">Etiketleri CSV Olarak İndir</button>
+            <button id="reset-btn" class="control-btn">Etiketleri Sıfırla (Resetle)</button>
+        </div>
     </div>
 
     <script>
-        // --- AYARLAR: BU BÖLÜMÜ DÜZENLEYİN ---
-
-        // 1. Sınıf isimlerinizi buraya yazın
-        const CLASSES = ["A", "B", "C", "D"];
-
-        // 2. 'images' klasöründeki TÜM resim dosyalarınızın adlarını buraya LİSTELEYİN.
-        // Bu adımı otomatikleştirmek için bir backend (Python gibi) gerekir,
-        // statik HTML'de bu listeyi manuel olarak sağlamalıyız.
-        const IMAGE_FILES = [
+        // --- AYARLAR BÖLÜMÜ (Değişiklik Yok) ---
+        const CLASSES = ["A", "B", "C", "D" ,'Resimi Begenmedim'];
+   const IMAGE_FILES = [
     "13_parca_01.png",
     "13_parca_02.png",
     "13_parca_03.png",
@@ -635,27 +635,25 @@
     "23_parca_49.png",
     "23_parca_50.png"
 ];
+     
 
-        // --- UYGULAMA KODU (Bu bölümü değiştirmeyin) ---
-
+        // --- UYGULAMA KODU ---
         const imageDisplay = document.getElementById('image-display');
         const buttonContainer = document.getElementById('button-container');
         const progressText = document.getElementById('progress');
         const downloadBtn = document.getElementById('download-btn');
+        const resetBtn = document.getElementById('reset-btn'); // <-- YENİ: Reset butonu tanımlandı
         const ANNOTATION_KEY = 'imageAnnotations';
 
         let annotations = {};
         let currentIndex = 0;
 
-        // Sayfa yüklendiğinde çalışacak fonksiyon
         window.onload = () => {
-            // Tarayıcı hafızasından eski etiketleri yükle
             const savedAnnotations = localStorage.getItem(ANNOTATION_KEY);
             if (savedAnnotations) {
                 annotations = JSON.parse(savedAnnotations);
             }
             
-            // Sınıf butonlarını oluştur
             CLASSES.forEach(className => {
                 const button = document.createElement('button');
                 button.innerText = className;
@@ -663,8 +661,6 @@
                 button.onclick = () => annotate(className);
                 buttonContainer.appendChild(button);
             });
-
-            // Bir sonraki etiketlenmemiş resmi bul ve göster
             findNextUnannotated();
         };
 
@@ -678,7 +674,7 @@
         function displayImage() {
             if (currentIndex < IMAGE_FILES.length) {
                 const imageName = IMAGE_FILES[currentIndex];
-                imageDisplay.src = `oositler/${imageName}`;
+                imageDisplay.src = imageName;
                 progressText.innerText = `Resim ${currentIndex + 1} / ${IMAGE_FILES.length} (${imageName})`;
             } else {
                 imageDisplay.style.display = 'none';
@@ -691,10 +687,7 @@
             if (currentIndex < IMAGE_FILES.length) {
                 const imageName = IMAGE_FILES[currentIndex];
                 annotations[imageName] = className;
-                
-                // Anlık olarak tarayıcı hafızasına kaydet
                 localStorage.setItem(ANNOTATION_KEY, JSON.stringify(annotations));
-                
                 currentIndex++;
                 displayImage();
             }
@@ -702,11 +695,9 @@
 
         downloadBtn.onclick = () => {
             let csvContent = "data:text/csv;charset=utf-8,dosya_adi,sinif\n";
-            
             for (const [filename, classLabel] of Object.entries(annotations)) {
                 csvContent += `${filename},${classLabel}\n`;
             }
-
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
@@ -714,6 +705,17 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        };
+        
+        // --- YENİ EKLENEN RESETLEME FONKSİYONU ---
+        resetBtn.onclick = () => {
+            if (confirm(" Tarayıcı hafızasındaki TÜM etiketler silinecek! (İndirdiğiniz CSV dosyası etkilenmez)")) {
+                // Tarayıcı hafızasını temizle
+                localStorage.removeItem(ANNOTATION_KEY);
+                alert("Tüm etiketler başarıyla sıfırlandı.");
+                // Sayfayı yeniden yükleyerek en baştan başla
+                window.location.reload();
+            }
         };
     </script>
 </body>
