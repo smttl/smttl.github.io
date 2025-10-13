@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oosit Etiketleme (JSON + Firestore)</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; background: #fafafa; margin: 0; padding: 20px; }
+  .container { max-width: 900px; margin: auto; }
+  img { max-width: 100%; max-height: 70vh; border: 2px solid #ccc; border-radius: 10px; margin: 20px 0; }
+  button { font-size: 18px; margin: 10px; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; color: white; }
+  .a { background: #007bff; } .a:hover { background: #0056b3; }
+  .b { background: #28a745; } .b:hover { background: #1e7e34; }
+  .c { background: #ffc107; color: black; } .c:hover { background: #d39e00; color: black; }
+  .d { background: #fd7e14; } .d:hover { background: #e8590c; }
+  .e { background: #dc3545; } .e:hover { background: #bd2130; }
+  #download { background: #17a2b8; } #download:hover { background: #117a8b; }
+  #reset { background: #6c757d; } #reset:hover { background: #5a6268; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>🧬 Oosit Etiketleme Aracı</h2>
+  <p>Fotoğrafları sırasıyla etiketleyin. Kaldığınız yer otomatik kaydedilir.</p>
+  
+  <img id="photo" src="" alt="Fotoğraf yükleniyor...">
+  
+  <div>
+    <button class="a" onclick="label('A')">A</button>
+    <button class="b" onclick="label('B')">B</button>
+    <button class="c" onclick="label('C')">C</button>
+    <button class="d" onclick="label('D')">D</button>
+    <button class="e" onclick="label('E')">E</button>
+  </div>
+
+  <p id="progress"></p>
+
+  <div>
+    <button id="download" onclick="downloadCSV()">📥 CSV İndir</button>
+    <button id="reset" onclick="resetProgress()">♻️ Sıfırla</button>
+  </div>
+</div>
+
+<script type="module">
+// --- Firebase SDK ---
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+// --- 🔧 Firebase yapılandırma (kendi bilgilerinle değiştir) ---
+const firebaseConfig = {
+  apiKey: "AIzaSyD1HInxSy7xI9xWywvMsobeFu0qGVW5wJw",
+  authDomain: "oosit-d5190.firebaseapp.com",
+  projectId: "oosit-d5190",
+  storageBucket: "oosit-d5190.firebasestorage.app",
+  messagingSenderId: "333999398179",
+  appId: "1:333999398179:web:75da8319fb10e678310096",
+  measurementId: "G-GLVGFDJ56B"
+};
+
+// --- Firebase başlat ---
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// --- Değişkenler ---
+let images = [];
+let current = 0;
+let results = JSON.parse(localStorage.getItem("etiketler") || "[]");
+let lastIndex = parseInt(localStorage.getItem("index") || "0");
+
+// --- Fotoğraf listesini JSON’dan yükle ---
+async function loadImages() {
+  try {
+    const response = await fetch("https://smttl.github.io/oosit/dosyalar.json");
+    images = await response.json();
+    console.log(`📸 ${images.length} fotoğraf yüklendi.`);
+  } catch (err) {
+    console.error("❌ JSON yüklenemedi:", err);
+    alert("Fotoğraf listesi (dosyalar.json) yüklenemedi!");
+    return;
+  }
+
+  // Kaldığı yerden devam et
+  current = lastIndex < images.length ? lastIndex : 0;
+  showImage();
+}
+
+// --- Görsel göster ---
+function showImage() {
+  const imgElem = document.getElementById("photo");
+  const progElem = document.getElementById("progress");
+
+  if (current >= images.length) {
+    imgElem.src = "";
+    progElem.innerText = "✅ Tüm fotoğraflar etiketlendi!";
+    return;
+  }
+
+  const imgURL = `https://smttl.github.io/oosit/images/${images[current]}`;
+  imgElem.src = imgURL;
+  progElem.innerText = `Fotoğraf ${current + 1} / ${images.length}`;
+}
+
+// --- Etiketleme işlemi ---
+window.label = async function (etiket) {
+  const file = images[current];
+  const record = { dosya_adi: file, etiket, timestamp: new Date().toISOString() };
+
+  // Firestore’a yaz
+  try {
+    await addDoc(collection(db, "etiketler"), record);
+    console.log(`✅ ${file} -> ${etiket} Firestore’a kaydedildi`);
+  } catch (e) {
+    console.error("❌ Firestore hatası:", e);
+  }
+
+  // localStorage’a yaz
+  results.push(record);
+  localStorage.setItem("etiketler", JSON.stringify(results));
+  localStorage.setItem("index", current + 1);
+
+  // Sonraki foto
+  current++;
+  showImage();
+};
+
+// --- CSV indirici ---
+window.downloadCSV = function () {
+  let csv = "dosya_adi,etiket,timestamp\n";
+  results.forEach(r => csv += `${r.dosya_adi},${r.etiket},${r.timestamp}\n`);
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "etiketler.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+// --- Resetleme ---
+window.resetProgress = function () {
+  if (confirm("Tüm yerel ilerlemeyi sıfırlamak istiyor musun?\n(Bu işlem Firestore’daki kayıtları silmez)")) {
+    localStorage.removeItem("etiketler");
+    localStorage.removeItem("index");
+    results = [];
+    current = 0;
+    showImage();
+    alert("✅ İlerleme sıfırlandı.");
+  }
+};
+
+// --- Başlat ---
+window.onload = loadImages;
+</script>
+</body>
+</html>
