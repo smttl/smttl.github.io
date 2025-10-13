@@ -1,36 +1,154 @@
 <!DOCTYPE html>
-<html>
-  <head><meta charset="UTF-8"><title>Oosit ONNX Test</title></head>
-  <body>
-    <h2>ONNX Model Test</h2>
-    <input type="file" id="fileInput" accept="image/*">
-    <canvas id="canvas" width="512" height="512"></canvas>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>YOLOv8 Tarayıcı Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
-    <script>
-      async function runModel(imageData) {
+  <!-- ONNX Runtime Web -->
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #111;
+      color: white;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 { color: #0f0; font-size: 22px; margin-bottom: 20px; }
+
+    #file-input {
+      padding: 10px; margin: 10px auto;
+      border-radius: 8px; background: #222;
+      border: 1px solid #333; color: white;
+    }
+
+    #canvas {
+      margin-top: 20px;
+      max-width: 95vw;
+      border: 2px solid #555;
+      border-radius: 10px;
+    }
+
+    #status { margin-top: 10px; color: #ccc; }
+  </style>
+</head>
+
+<body>
+  <h1>🧠 YOLOv8 ONNX Web Demo</h1>
+  <input type="file" id="file-input" accept="image/*">
+  <div id="status">Model yükleniyor...</div>
+  <canvas id="canvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const statusText = document.getElementById("status");
+    const fileInput = document.getElementById("file-input");
+
+    // === MODELİ YÜKLE ===
+    async function loadModel() {
+      try {
+        statusText.innerText = "📦 Model yükleniyor...";
         const session = await ort.InferenceSession.create("model.onnx");
-        const imgData = new Float32Array(imageData.data.length / 4 * 3);
-        for (let i = 0, j = 0; i < imageData.data.length; i += 4, j += 3) {
-          imgData[j] = imageData.data[i] / 255.0;
-          imgData[j + 1] = imageData.data[i + 1] / 255.0;
-          imgData[j + 2] = imageData.data[i + 2] / 255.0;
-        }
-        const inputTensor = new ort.Tensor("float32", imgData, [1, 3, 512, 512]);
-        const results = await session.run({ images: inputTensor });
-        console.log(results);
+        statusText.innerText = "✅ Model yüklendi. Resim seçiniz.";
+        return session;
+      } catch (e) {
+        statusText.innerText = "❌ Model yüklenemedi: " + e.message;
+      }
+    }
+
+    // === GÖRÜNTÜYÜ MODEL BOYUTUNA ÖLÇEKLE ===
+    function preprocessImage(img, modelSize = 640) {
+      const tempCanvas = document.createElement("canvas");
+      const tempCtx = tempCanvas.getContext("2d");
+
+      const [iw, ih] = [img.width, img.height];
+      tempCanvas.width = modelSize;
+      tempCanvas.height = modelSize;
+      tempCtx.drawImage(img, 0, 0, modelSize, modelSize);
+      const imgData = tempCtx.getImageData(0, 0, modelSize, modelSize).data;
+
+      const input = new Float32Array(modelSize * modelSize * 3);
+      for (let i = 0; i < modelSize * modelSize; i++) {
+        input[i] = imgData[i * 4] / 255;
+        input[i + modelSize * modelSize] = imgData[i * 4 + 1] / 255;
+        input[i + 2 * modelSize * modelSize] = imgData[i * 4 + 2] / 255;
       }
 
-      document.getElementById("fileInput").addEventListener("change", async (e) => {
-        const ctx = document.getElementById("canvas").getContext("2d");
-        const img = new Image();
-        img.onload = async () => {
-          ctx.drawImage(img, 0, 0, 512, 512);
-          const imageData = ctx.getImageData(0, 0, 512, 512);
-          await runModel(imageData);
-        };
-        img.src = URL.createObjectURL(e.target.files[0]);
+      return {
+        tensor: new ort.Tensor("float32", input, [1, 3, modelSize, modelSize]),
+        scale: [iw / modelSize, ih / modelSize]
+      };
+    }
+
+    // === YOLOv8 ÇIKTISINI ÇÖZ ===
+    function parseYoloOutput(output, scale) {
+      const boxes = [];
+      const data = output.data || output;
+      const numCols = 85; // xywh + conf + 80 class
+      const numDet = data.length / numCols;
+
+      for (let i = 0; i < numDet; i++) {
+        const offset = i * numCols;
+        const [cx, cy, w, h] = data.slice(offset, offset + 4);
+        const conf = data[offset + 4];
+        if (conf < 0.4) continue;
+
+        const classScores = data.slice(offset + 5, offset + numCols);
+        const classId = classScores.indexOf(Math.max(...classScores));
+
+        // xywh -> x1y1x2y2
+        const x1 = (cx - w / 2) * scale[0];
+        const y1 = (cy - h / 2) * scale[1];
+        const x2 = (cx + w / 2) * scale[0];
+        const y2 = (cy + h / 2) * scale[1];
+        boxes.push([x1, y1, x2, y2, conf, classId]);
+      }
+      return boxes;
+    }
+
+    // === KUTULARI ÇİZ ===
+    function drawBoxes(img, boxes) {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+
+      ctx.lineWidth = 2;
+      ctx.font = "18px Arial";
+      boxes.forEach(([x1, y1, x2, y2, conf, cls]) => {
+        ctx.strokeStyle = "lime";
+        ctx.fillStyle = "lime";
+        ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+        ctx.fillText(`Obj${cls} ${(conf * 100).toFixed(1)}%`, x1 + 4, y1 + 20);
       });
-    </script>
-  </body>
+    }
+
+    // === ANA İŞLEME ===
+    async function runInference(session, img) {
+      statusText.innerText = "🔍 Analiz yapılıyor...";
+      const { tensor, scale } = preprocessImage(img);
+      const results = await session.run({ images: tensor });
+      const output = results[Object.keys(results)[0]];
+      const boxes = parseYoloOutput(output, scale);
+      drawBoxes(img, boxes);
+      statusText.innerText = `✅ ${boxes.length} nesne bulundu.`;
+    }
+
+    // === PROGRAM BAŞLANGICI ===
+    (async () => {
+      const session = await loadModel();
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const img = new Image();
+        img.onload = () => runInference(session, img);
+        img.src = URL.createObjectURL(file);
+      });
+    })();
+  </script>
+</body>
 </html>
